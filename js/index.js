@@ -95,3 +95,45 @@ for (let i = 0; i < items.length; i++) {
         }
     }
 }
+
+
+//---------- CREATE CARD DECK (should be 60 cards) ----------
+
+let cardDeck = [];
+
+class Card {
+    constructor (firstItem, secondItem, solution) {
+        this.firstItem = firstItem;
+        this.secondItem = secondItem;
+        this.solution = solution;
+    }
+
+    createCard() {
+        return {item01: this.firstItem, item02: this.secondItem, solution: this.solution};
+    }
+}
+
+// first set of cards: combinations of 1 true, 1 false item
+// loop through items, make a deep copy
+for (let i=0; i < items.length; i++) {
+    let trueItemsList = JSON.parse(JSON.stringify(items));
+    let falseItemsList = JSON.parse(JSON.stringify(falseItems));
+    let item01 = trueItemsList[i];
+
+    // loop through false items
+    for(let j=0; j < falseItemsList.length; j++) {
+        let item02 = falseItemsList[j];
+        let newCard = new Card(item01, item02, item01.name)
+
+        // if unique combination (neither same item nor same color) create a card
+        if (item01.name !== item02.name && item01.color.name !== item02.color.name) {
+            cardDeck.push(newCard.createCard());
+        }
+    }
+}
+
+
+
+console.log(items);
+console.log(falseItems);
+console.log(cardDeck);
