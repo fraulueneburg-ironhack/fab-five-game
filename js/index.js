@@ -1,75 +1,114 @@
-let items = [
-    {
-        name: "chair",
-        color: "red",
-        imagesrc: "../img/item-01.svg",
-    },
-    {
-        name: "bottle",
-        color: "green",
-        imagesrc: "../img/item-02.svg",
-    },
-    {
-        name: "book",
-        color: "blue",
-        imagesrc: "../img/item-03.svg",
-    },
-    {
-        name: "ghost",
-        color: "white",
-        imagesrc: "../img/item-04.svg",
-    },
-    {
-        name: "mouse",
-        color: "grey",
-        imagesrc: "../img/item-05.svg",
-    }
-]
+let btnStart = document.getElementById('btn-start');
+let btnQuestionmark = document.getElementById('btn-questionsmark');
+
+window.addEventListener('load', () => {
+    if (btnStart) { btnStart.addEventListener('click', startGame); }
+    if (btnQuestionmark) { btnQuestionmark.addEventListener('click', showInstructions); }
+    function startGame() { alert('Ready! Steady! Gogogogo!') }
+    function showInstructions() { alert('Here’s how this works') }
+});
+
+let time = 0;
+let round = 0;
+let score = 0;
 
 let colors = [
     {
-        name: "red",
+        name: "color01",
+        alias: "red",
         hex: "#de1f26",
     },
     {
-        name: "green",
+        name: "color02",
+        alias: "green",
         hex: "#197f36",
     },
     {
-        name: "blue",
+        name: "color03",
+        alias: "blue",
         hex: "#4c5aa8",
     },
     {
-        name: "white",
+        name: "color04",
+        alias: "white",
         hex: "#eee8e7",
     },
     {
-        name: "grey",
+        name: "color05",
+        alias: "grey",
         hex: "#747484",
     },
 ]
 
-let cardDeck = []
+let items = [
+    {
+        name: "item01",
+        alias: "chair",
+        imageSrc: "../img/item01.svg",
+        color: colors[0],
+        originalColor: true,
+    },
+    {
+        name: "item02",
+        alias: "bottle",
+        imageSrc: "../img/item02.svg",
+        color: colors[1],
+        originalColor: true,
+    },
+    {
+        name: "item03",
+        alias: "book",
+        imageSrc: "../img/item03.svg",
+        color: colors[2],
+        originalColor: true,
+    },
+    {
+        name: "item04",
+        alias: "ghost",
+        imageSrc: "../img/item04.svg",
+        color: colors[3],
+        originalColor: true,
+    },
+    {
+        name: "item05",
+        alias: "mouse",
+        imageSrc: "../img/item05.svg",
+        color: colors[4],
+        originalColor: true,
+    }
+]
 
-class Card {
-    constructor () {
-        this.item = item;
-        this.color = color;
+let falseItems = [];
+
+// create array of false items:
+// loop through items, make a deep copy
+for (let i = 0; i < items.length; i++) {
+    let trueItems = JSON.parse(JSON.stringify(items));
+    let newItem = trueItems[i];
+    for (let j = 0; j < colors.length; j++) {       /*loop through colours*/
+        if (trueItems[i].color !== colors[j]) {     /*if colour isn’t the original one, create new item with false colour*/
+            let newItemFalseColor = JSON.parse(JSON.stringify(newItem));
+            newItemFalseColor.color = colors[j];
+            newItemFalseColor.color.originalColor = false;
+            falseItems.push(newItemFalseColor);     /*push item to falseItems array*/
+        }
     }
 }
 
-window.addEventListener('load', () => {
-    let btnStart = document.getElementById('btn-start');
-    let btnQuestionmark = document.getElementById('btn-questionsmark');
+console.log(items);
+console.log(falseItems);
 
-    btnStart.addEventListener('click', startGame);
-    btnQuestionmark.addEventListener('click', showInstructions);
-  
-    function startGame() {
-        alert('Ready! Steady! Gogogogo!')
-    }
+// 60 cards
+let cardDeck = [];
 
-    function showInstructions() {
-        alert('Here’s how this works')
+
+class Card {
+    constructor (options) {
+        this.item01 = "";
+        this.item01Color = "";
+        this.item02 = "";
+        this.item02Color = "";
+        // this.solutionItem = "";
+        // this.solutionColor = "";
     }
-});  
+}
