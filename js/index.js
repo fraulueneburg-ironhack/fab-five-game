@@ -1,12 +1,17 @@
-let btnStart = document.getElementById('btn-start');
-let btnQuestionmark = document.getElementById('btn-questionsmark');
+window.onload = function(){
+    let btnStart = document.querySelector('.btn-start');
+    let btnQuestionmark = document.querySelector('.btn-questionsmark');
+    
+    btnStart.onclick = () => { startGame(); }
+    btnQuestionmark.onclick = () => { showInstructions(); }
 
-window.addEventListener('load', () => {
-    if (btnStart) { btnStart.addEventListener('click', startGame); }
-    if (btnQuestionmark) { btnQuestionmark.addEventListener('click', showInstructions); }
-    function startGame() { alert('Ready! Steady! Gogogogo!') }
-    function showInstructions() { alert('Here’s how this works') }
-});
+    function startGame() {
+        alert('Ready! Steady! Gogogogo!');
+    }
+    function showInstructions() {
+        alert('Here’s how this works');
+    }
+}
 
 let time = 0;
 let round = 0;
@@ -121,7 +126,7 @@ function createCardDeck(items,colors) {
         let trueItemsList = JSON.parse(JSON.stringify(items));
         let falseItemsList = JSON.parse(JSON.stringify(falseItems));
         let item01 = trueItemsList[i];
-        let solution = "item01";
+        let solution = item01;
 
         // loop through false items
         for(let j=0; j < falseItemsList.length; j++) {
@@ -189,7 +194,7 @@ function createCardDeck(items,colors) {
     console.log(cardDeck);
     console.log(`CARD DECK AS TEXT:`);
     for (let i=0; i < cardDeck.length; i++) {
-        console.log(`#${i+1}: ${cardDeck[i].item01.shape.toUpperCase()} ${cardDeck[i].item01.color.alias} + ${cardDeck[i].item02.shape.toUpperCase()} ${cardDeck[i].item02.color.alias}`);
+        console.log(`#${i+1}: ${cardDeck[i].item01.shape.toUpperCase()} ${cardDeck[i].item01.color.alias} + ${cardDeck[i].item02.shape.toUpperCase()} ${cardDeck[i].item02.color.alias}     =>     ${cardDeck[i].solution}`);
     }
 }
 
