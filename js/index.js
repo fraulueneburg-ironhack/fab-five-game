@@ -143,6 +143,7 @@ for (let i=0; i < falseItems.length; i++) {
             // for(let k =0; k < items.length; k++){
 
             // };
+            
             let newCard = new Card(item01, item02, solution)
             cardDeck.push(newCard.createCard());
         }
