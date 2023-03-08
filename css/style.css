@@ -12,6 +12,12 @@
     --border-default: var(--border-width-default) var(--border-style-default) var(--border-color-default);
     --footer-height: 50px;
     --transition-default: all 0.2s ease;
+    --font-family-default: "DM Sans", sans-serif;
+
+    --size-mobile-max: 425px;
+    --size-tablet-max: 768px;
+    --size-desktop-max: 1024px;
+    --size-screen-max: 1440px;
 }
 
 body {
@@ -19,7 +25,7 @@ body {
     color: var(--text-color);
     display: flex;
     flex-direction: column;
-    font-family: "DM Sans", sans-serif;
+    font-family: var(--font-family-default);
     font-size: 1.5rem;
     height: 100%;
     line-height: 1.4;
@@ -31,7 +37,7 @@ body {
 
 main {
     flex: 1;
-    padding: 3rem 0;
+    padding: 4rem 0 3rem;
 }
 
 /*---------- TYPOGRAPHY ----------*/
@@ -41,8 +47,11 @@ h1, h2, h3 {
 }
 
 h1 {
+    font-size: 4rem;
     margin: 0 0 1rem;
     letter-spacing: 4px;
+    line-height: 1.1;
+    text-shadow: 3px 3px rgba(255 255 255 / 60%);
 }
 
 h2 {
@@ -57,7 +66,6 @@ p {
 
 a {
     color: var(--text-color);
-    font-weight: 700;
     text-decoration: none;
 }
 
@@ -68,26 +76,38 @@ a, button, .btn {
 
 button, .btn {
     background-color: var(--color-blue);
-    color: var(--color-white);
-    border: none;
     border-radius: 8px;
+    border: none;
+    color: var(--color-white);
     display: block;
-    margin: 0 auto;
-    padding: 15px 20px;
-    font-size: 1.6rem;
+    font-family: var(--font-family-default);
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0 auto 15px;
     min-height: 48px;
+    padding: 15px 20px;
+    text-transform: uppercase;
 }
+
+.btn-green  { background-color: var(--color-green); }
+.btn-blue   { background-color: var(--color-blue); }
+.btn-red    { background-color: var(--color-red); }
+.btn-white  { background-color: var(--color-white); }
+.btn-grey   { background-color: var(--color-grey); }
 
 button:hover,
 .btn:hover {
-    transform: scale(1.05);
+    box-shadow: inset 0 0 100px rgb(0 0 0 / 30%);
+    transform: scale(1.1);
     transition: var(--transition-default);
 }
 
 .btn-group button,
 .btn-group .btn {
     display: inline-block;
-    margin: 0 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 span.highlight {
@@ -119,17 +139,18 @@ ul.unstyled li {
 }
 
 nav ul li.questionsmark a {
-    width: 50px;
-    height: 50px;
-    border: 4px solid var(--border-color-default);
     border-radius: 50%;
+    border: 4px solid var(--border-color-default);
     display: block;
     font-size: 2.4rem;
+    font-weight: 700;
+    height: 50px;
     transition: var(--transition-default);
+    width: 50px;
 }
 
 nav ul li.questionsmark a:hover {
-    transform: scale(1.2);
+    transform: scale(1.2) rotate(10deg);
     transition: var(--transition-default);
 }
 
@@ -138,7 +159,7 @@ nav ul li.questionsmark a:hover {
 header {
     border-bottom: var(--border-width-default) dotted var(--border-color-default);
     position: relative;
-    padding: 0 75px;
+    padding: 0 75px 0;
 }
 
 
@@ -148,10 +169,26 @@ footer {
     border-top: var(--border-width-default) dotted var(--border-color-default);
     box-sizing: border-box;
     font-size: 1.2rem;
-    font-weight: bold;
-    text-align: left;
-    padding: 1rem 0 0;
+    font-weight: 500;
     height: var(--footer-height);
+    padding: 1rem 0 0;
+    text-align: center;
+}
+
+footer a {
+    border-bottom: 1px solid currentColor;
+}
+
+@media (min-width: 375px) {
+    footer br {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    footer {
+        text-align: right;
+    }
 }
 
 /*---------- CONTENT ----------*/
@@ -160,4 +197,10 @@ ul.list-items {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+@media (max-width: 1023px) {
+    #intro p br {
+        display: none;
+    }
 }
