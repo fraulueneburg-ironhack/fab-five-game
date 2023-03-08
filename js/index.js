@@ -97,7 +97,7 @@ for (let i = 0; i < items.length; i++) {
 }
 
 
-//---------- CREATE CARD DECK (should be 60 cards) ----------
+// create card deck
 
 let cardDeck = [];
 
@@ -107,14 +107,13 @@ class Card {
         this.secondItem = secondItem;
         this.solution = solution;
     }
-
     createCard() {
         return {item01: this.firstItem, item02: this.secondItem, solution: this.solution};
     }
 }
 
 // first set of cards: combinations of 1 true, 1 false item
-// loop through items, make a deep copy
+// loop through true items, make a deep copy
 for (let i=0; i < items.length; i++) {
     let trueItemsList = JSON.parse(JSON.stringify(items));
     let falseItemsList = JSON.parse(JSON.stringify(falseItems));
@@ -123,17 +122,39 @@ for (let i=0; i < items.length; i++) {
     // loop through false items
     for(let j=0; j < falseItemsList.length; j++) {
         let item02 = falseItemsList[j];
-        let newCard = new Card(item01, item02, item01.name)
 
-        // if unique combination (neither same item nor same color) create a card
+        // if unique combination (neither same item nor same color) create a card + push to deck
         if (item01.name !== item02.name && item01.color.name !== item02.color.name) {
+            let newCard = new Card(item01, item02, item01.name)
+            cardDeck.push(newCard.createCard());
+        }
+    }
+}
+
+// second set of cards: combinations of 2 false items
+for (let i=0; i < falseItems.length; i++) {
+    let falseItemsList = JSON.parse(JSON.stringify(falseItems));
+    let item01 = falseItemsList[i];
+
+    for (let j=0; j < falseItems.length; j++) {
+        let item02 = falseItemsList[j];
+        if (item01.name !== item02.name) {
+            let solution="s";
+            // for(let k =0; k < items.length; k++){
+
+            // };
+            let newCard = new Card(item01, item02, solution)
             cardDeck.push(newCard.createCard());
         }
     }
 }
 
 
-
 console.log(items);
 console.log(falseItems);
 console.log(cardDeck);
+
+
+// QUESTIONS:
+// - I can use the same variable names in different for loops, right? RIGHT?
+// - 
