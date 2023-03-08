@@ -78,37 +78,20 @@ let items = [
     }
 ]
 
+
+// create array of false items (should be 20 cards)
+// loop through items, make a deep copy
 let falseItems = [];
 
-// create array of false items:
-// loop through items, make a deep copy
 for (let i = 0; i < items.length; i++) {
     let trueItems = JSON.parse(JSON.stringify(items));
     let newItem = trueItems[i];
     for (let j = 0; j < colors.length; j++) {       /*loop through colours*/
-        if (trueItems[i].color !== colors[j]) {     /*if colour isn’t the original one, create new item with false colour*/
+        if (items[i].color !== colors[j]) {         /*if colour isn’t the original one, create new item with false colour*/
             let newItemFalseColor = JSON.parse(JSON.stringify(newItem));
             newItemFalseColor.color = colors[j];
-            newItemFalseColor.color.originalColor = false;
+            newItemFalseColor.originalColor = false;
             falseItems.push(newItemFalseColor);     /*push item to falseItems array*/
         }
-    }
-}
-
-console.log(items);
-console.log(falseItems);
-
-// 60 cards
-let cardDeck = [];
-
-
-class Card {
-    constructor (options) {
-        this.item01 = "";
-        this.item01Color = "";
-        this.item02 = "";
-        this.item02Color = "";
-        // this.solutionItem = "";
-        // this.solutionColor = "";
     }
 }
