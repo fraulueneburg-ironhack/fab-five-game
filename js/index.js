@@ -143,6 +143,11 @@ function createCardDeck(items,colors) {
         }
     }
 
+    // TO DO
+    // -----
+    // - avoid double entries when creating cardDeck (i.e. BOOK red + BOTTLE white / BOTTLE white + BOOK red)
+    // - shuffle cards
+
     // second set of cards: pairs of 2 false items
     // - loop through false items, make a deep copy
     for (let i=0; i < falseItems.length; i++) {
@@ -168,6 +173,20 @@ function createCardDeck(items,colors) {
             }
         }
 
+        // remove duplicates
+        // for(let l=0; l < cardDeck.length; l++) {
+        //     let firstItem = cardDeck[l][0].name;
+        //     let secondItem = cardDeck[l][1].name;
+
+        //     for (let m=1; m < cardDeck.length - 1; m++) {
+        //         let firstItem2 = cardDeck[l+m][0].name;
+        //         let secondItem2 = cardDeck[l+m][1].name;
+
+        //         if (firstItem == secondItem2 && firstItem2 == secondItem) {
+        //             console.log("found dup");
+        //         }
+        //     }
+        // }
     }
 
     console.log(`ITEMS:`);
@@ -178,7 +197,7 @@ function createCardDeck(items,colors) {
     console.log(cardDeck);
     console.log(`CARD DECK AS TEXT:`);
     for (let i=0; i < cardDeck.length; i++) {
-        console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`);
+        console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`); // ${cardDeck[i].solution[0].shape}
     }
 }
 
