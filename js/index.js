@@ -1,23 +1,27 @@
 window.onload = function(){
+    let gameStarted = false;
+    let time = 0;
+    let round = 0;
+    let score = 0;
+
+    let body = document.getElementsByTagName('body');
     let btnStart = document.querySelector('.btn-start');
     let btnQuestionmark = document.querySelector('.btn-questionsmark');
+    let boxIntro = document.querySelector('.intro');
     
     btnStart.onclick = () => { startGame(); }
     btnQuestionmark.onclick = () => { showInstructions(); }
 
     function startGame() {
-        alert('Ready! Steady! Gogogogo!');
+        gameStarted = true;
+        boxIntro.classList.toggle("hidden");
     }
     function showInstructions() {
-        alert('Here’s how this works');
+        boxIntro.classList.toggle("hidden");
     }
 }
 
-let time = 0;
-let round = 0;
-let score = 0;
-
-let colorsDefault = [
+let colorsDefaultArr = [
     {
         name: "color01",
         alias: "red",
@@ -46,42 +50,42 @@ let colorsDefault = [
 ]
 
 // array of true items (5 total)
-let itemsDefault = [
+let itemDefaultArr = [
     {
         name: "item01",
         shape: "chair",
         imageSrc: "../img/item01.svg",
-        color: colorsDefault[0],
-        originalColor: colorsDefault[0],
+        color: colorsDefaultArr[0],
+        originalColor: colorsDefaultArr[0],
     },
     {
         name: "item02",
         shape: "bottle",
         imageSrc: "../img/item02.svg",
-        color: colorsDefault[1],
-        originalColor: colorsDefault[1],
+        color: colorsDefaultArr[1],
+        originalColor: colorsDefaultArr[1],
     },
     {
         name: "item03",
         shape: "book",
         imageSrc: "../img/item03.svg",
-        color: colorsDefault[2],
-        originalColor: colorsDefault[2],
+        color: colorsDefaultArr[2],
+        originalColor: colorsDefaultArr[2],
     },
     {
         name: "item04",
         shape: "ghost",
         imageSrc: "../img/item04.svg",
-        color: colorsDefault[3],
-        originalColor: colorsDefault[3],
+        color: colorsDefaultArr[3],
+        originalColor: colorsDefaultArr[3],
     },
     {
         name: "item05",
         shape: "mouse",
         imageSrc: "../img/item05.svg",
-        color: colorsDefault[4],
-        originalColor: colorsDefault[4],
-    }
+        color: colorsDefaultArr[4],
+        originalColor: colorsDefaultArr[4],
+    },
 ]
 
 
@@ -97,22 +101,21 @@ class Card {
     }
     createCard() {
         return {
-            item01: this.firstItem,
-            item02: this.secondItem,
-            solution: this.solution
+            items: [this.firstItem, this.secondItem],
+            solution: this.solution,
         };
     }
 }
 
 function createCardDeck(items,colors) {
-    // create array of false items (should be 20 total)
+    // make array of false items (should be 20 total)
     // - loop through items, make a deep copy
     let falseItems = [];
     for (let i = 0; i < items.length; i++) {
         let trueItems = JSON.parse(JSON.stringify(items));
         let newItem = trueItems[i];
         for (let j = 0; j < colors.length; j++) {       // - loop through colours
-            if (items[i].color !== colors[j]) {         // - if colour isn’t the original one, create new item with false colour
+            if (items[i].color !== colors[j]) {         // - create new item only if colour isn’t the original one
                 let newItemFalseColor = JSON.parse(JSON.stringify(newItem));
                 newItemFalseColor.color = colors[j];
                 falseItems.push(newItemFalseColor);     // - push item to falseItems array
@@ -120,30 +123,25 @@ function createCardDeck(items,colors) {
         }
     }
 
-    // first set of cards: pairs of 1 true, 1 false item
-    // loop through true items, make a deep copy
+    // make first set of cards: pairs of 1 true, 1 false item
+    // - loop through true items, make a deep copy
     for (let i=0; i < items.length; i++) {
         let trueItemsList = JSON.parse(JSON.stringify(items));
         let falseItemsList = JSON.parse(JSON.stringify(falseItems));
         let item01 = trueItemsList[i];
-        let solution = item01;
+        let solution = [item01];
 
-        // loop through false items
+        // - loop through false items
         for(let j=0; j < falseItemsList.length; j++) {
             let item02 = falseItemsList[j];
 
-            // if unique combination (neither same item nor same color) create card + push to deck
+            // - if unique combination (neither same item nor same color) create card + push to deck
             if (item01.shape !== item02.shape && item01.color.alias !== item02.color.alias) {
                 let newCard = new Card(item01, item02, solution)
                 cardDeck.push(newCard.createCard());
             }
         }
     }
-
-    // TO DO
-    // -----
-    // - avoid double entries when creating cardDeck (i.e. BOOK red + BOTTLE white / BOTTLE white + BOOK red)
-    // - shuffle cards
 
     // second set of cards: pairs of 2 false items
     // - loop through false items, make a deep copy
@@ -159,7 +157,7 @@ function createCardDeck(items,colors) {
 
                 // find + log solution:
                 // - loop through items + find the one whose shape or color is not on the card
-                let solution = [];    //= JSON.parse(JSON.stringify(items));
+                let solution = [];
                 for(let k=0; k < items.length; k++){
                     if(items[k].shape !== item01.shape && items[k].shape !== item02.shape && items[k].color.alias !== item01.color.alias && items[k].color.alias !== item02.color.alias) {
                         solution.push(items[k]);
@@ -170,32 +168,18 @@ function createCardDeck(items,colors) {
             }
         }
 
-        // remove duplicates
-        // for(let l=0; l < cardDeck.length; l++) {
-        //     let firstItem = cardDeck[l][0].name;
-        //     let secondItem = cardDeck[l][1].name;
-
-        //     for (let m=1; m < cardDeck.length - 1; m++) {
-        //         let firstItem2 = cardDeck[l+m][0].name;
-        //         let secondItem2 = cardDeck[l+m][1].name;
-
-        //         if (firstItem == secondItem2 && firstItem2 == secondItem) {
-        //             console.log("found dup");
-        //         }
-        //     }
-        // }
     }
 
     console.log(`ITEMS:`);
     console.log(items);
-    console.log(`FALSE ITEMS:`);        
+    console.log(`FALSE ITEMS:`);
     console.log(falseItems);
     console.log(`CARD DECK:`);
     console.log(cardDeck);
     console.log(`CARD DECK AS TEXT:`);
     for (let i=0; i < cardDeck.length; i++) {
-        console.log(`#${i+1}: ${cardDeck[i].item01.shape.toUpperCase()} ${cardDeck[i].item01.color.alias} + ${cardDeck[i].item02.shape.toUpperCase()} ${cardDeck[i].item02.color.alias}     =>     ${cardDeck[i].solution}`);
+        console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`);
     }
 }
 
-createCardDeck(itemsDefault,colorsDefault);
+createCardDeck(itemDefaultArr,colorsDefaultArr);
