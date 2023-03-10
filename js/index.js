@@ -44,7 +44,12 @@ window.onload = function(){
 
         // wait two seconds (shuffle animation), then show random card
         setTimeout(() => {
-            currentCard.innerHTML = `${obj1.shape} ${obj1.color.alias} + ${obj2.shape} ${obj2.color.alias}`;
+            currentCard.innerHTML = `
+            
+            <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
+            <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>
+            
+            `;
             // function countBackwards(e){
             //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
             // }
@@ -184,11 +189,6 @@ function createCardDeck(items,colors) {
             }
         }
     }
-
-    // TO DO
-    // -----
-    // - avoid double entries when creating cardDeck (i.e. BOOK red + BOTTLE white / BOTTLE white + BOOK red)
-    // - shuffle cards
 
     // second set of cards: pairs of 2 false items
     // - loop through false items, make a deep copy
