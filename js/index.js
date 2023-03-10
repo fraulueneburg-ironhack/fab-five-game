@@ -10,7 +10,7 @@ window.onload = function(){
     let btnDrawCard = document.querySelector('.btn-draw-card');
     let timeWrapper = document.querySelector('.time .num');
     let scoreWrapper = document.querySelector('.wins .num');
-    let currentCard = document.querySelector('.card');
+    let currentCard = document.querySelector('.card.current');
     let fabFiveItems = document.querySelectorAll('.fab-five-items li a');
     
     btnStart.onclick = () => { startGame(); }
@@ -18,7 +18,7 @@ window.onload = function(){
     btnDrawCard.onclick = () => { drawCard(); }
 
 
-    // STARTING
+    // START GAME
 
     function startGame() {
         gameStarted = true;
@@ -45,6 +45,10 @@ window.onload = function(){
         // wait two seconds (shuffle animation), then show random card
         setTimeout(() => {
             currentCard.innerHTML = `${obj1.shape} ${obj1.color.alias} + ${obj2.shape} ${obj2.color.alias}`;
+            // function countBackwards(e){
+            //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
+            // }
+            // setInterval(countBackwards(time),1000);
         }, 2000);
         clearTimeout();
 
