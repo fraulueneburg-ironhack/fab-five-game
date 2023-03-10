@@ -4,14 +4,15 @@
     --color-blue: #4c5aa8;
     --color-white: #eee8e7;
     --color-grey: #747484;
+    --bg-outer: #dba12d;
 
     --text-color: #222222;
     --border-color-default: var(--text-color);
     --border-width-default: 4px;
     --border-style-default: solid;
     --border-default: var(--border-width-default) var(--border-style-default) var(--border-color-default);
-    --footer-height: 50px;
-    --transition-default: all 0.2s ease;
+    --footer-height: 70px;
+    --transition-default: all 0.3s ease;
     --font-family-default: "DM Sans", sans-serif;
     --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
 
@@ -22,7 +23,7 @@
 }
 
 body {
-    background: radial-gradient(#e3b95e, #dba12d);
+    background-color: var(--bg-outer);
     color: var(--text-color);
     display: flex;
     flex-direction: column;
@@ -31,18 +32,23 @@ body {
     height: 100%;
     line-height: 1.4;
     margin: 0;
-    min-height: calc(100vh - var(--footer-height) - 1rem);
-    padding: 2rem;
+    min-height: calc(100vh - var(--footer-height));
+    padding: 0;
     text-align: center;
 }
 
+.container {
+    padding: 0 2rem;
+}
+
 main {
+    background: radial-gradient(#e3b95e 0%, var(--bg-outer) 75%);
     flex: 1;
-    padding: 4rem 0 3rem;
+    padding: 2rem 0 3rem;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /*---------- TYPOGRAPHY ----------*/
@@ -95,6 +101,10 @@ button, .btn {
     text-transform: uppercase;
 }
 
+button, .btn {
+    transition: var(--transition-default);
+}
+
 .btn-green  { background-color: var(--color-green); }
 .btn-blue   { background-color: var(--color-blue); }
 .btn-red    { background-color: var(--color-red); }
@@ -126,8 +136,8 @@ span.highlight {
 
 nav {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 30px;
+    top: 30px;
 }
 
 nav ul,
@@ -143,7 +153,11 @@ ul.unstyled li {
     margin: 0;
 }
 
-nav ul li.questionsmark a {
+nav ul li.question {
+    text-align: center;
+}
+
+nav ul li.question a {
     border-radius: 50%;
     border: var(--border-width-default) solid var(--border-color-default);
     display: block;
@@ -154,30 +168,33 @@ nav ul li.questionsmark a {
     width: 50px;
 }
 
-nav ul li.questionsmark a:hover {
+nav ul li.question a:hover {
     text-shadow: var(--text-shadow-default);
     transform: scale(1.2) rotate(10deg);
     transition: var(--transition-default);
 }
 
+
 /*---------- HEADER ----------*/
 
 header {
+    background-color: var(--bg-outer);
     border-bottom: var(--border-width-default) dashed var(--border-color-default);
     position: relative;
-    padding: 0 75px 0;
+    padding: 2rem 75px 0;
 }
 
 
 /*---------- FOOTER ----------*/
 
 footer {
+    background-color: var(--bg-outer);
     border-top: var(--border-width-default) dashed var(--border-color-default);
     box-sizing: border-box;
     font-size: 1.2rem;
     font-weight: 500;
     height: var(--footer-height);
-    padding: 1rem 0 0;
+    padding: 1rem 0;
     text-align: center;
 }
 
@@ -199,14 +216,82 @@ footer a {
 
 /*---------- CONTENT ----------*/
 
-ul.list-items {
+ul.fab-five-items {
     display: flex;
     justify-content: center;
+    margin: 1rem 0;
     flex-wrap: wrap;
 }
 
+.fab-five-items li img {
+    transition: all 0.7s ease;
+}
+.game-started .fab-five-items li img {
+    cursor: pointer;
+    transition: all 0.7s ease;
+    transform: scale(1.2);
+    margin: 0 1rem;
+}
+
+.game-started .fab-five-items li a {
+    transition: all 0.2s ease;
+}
+
+.game-started .fab-five-items li a:hover img,
+.game-started .fab-five-items li a:focus img,
+.game-started .fab-five-items li a:active img {
+    transition: all 0.2s ease;
+    transform: scale(1.4);
+}
+
 @media (max-width: 1023px) {
-    #intro p br {
+    .intro p br {
         display: none;
     }
+}
+
+.game-started .intro {
+    display: none;
+}
+
+.play-head,
+.play-footer {
+    display: none;
+}
+
+.game-started .play-head {
+    display: flex;
+}
+
+.game-started .play-footer {
+    display: block;
+}
+
+.play-head {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.play-head h2 {
+    margin: 0;
+}
+
+.play-head .wins {
+    order: -1;
+}
+
+.game-started .fab-five-items {
+    margin: 2rem 0;
+}
+
+/*---------- CARDS ----------*/
+
+.card {
+    background: #E3B85C;
+    border-radius: 8px;
+    box-shadow: 0 0 20px 0 rgba(34,34,34,0.5);
+    display: block;
+    height: 280px;
+    margin: 3rem auto -4rem;
+    width: 210px;
 }

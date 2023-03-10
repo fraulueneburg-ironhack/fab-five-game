@@ -1,23 +1,61 @@
 window.onload = function(){
     let gameStarted = false;
-    let time = 0;
-    let round = 0;
+    let time = 10;
+    let rounds = 0;
     let score = 0;
 
-    let body = document.getElementsByTagName('body');
+    let body = document.querySelector('body');
     let btnStart = document.querySelector('.btn-start');
-    let btnQuestionmark = document.querySelector('.btn-questionsmark');
-    let boxIntro = document.querySelector('.intro');
+    let btnQuestion = document.querySelector('.btn-question');
+    let btnDrawCard = document.querySelector('.btn-draw-card');
+    let timeWrapper = document.querySelector('.time .num');
+    let scoreWrapper = document.querySelector('.wins .num');
+    let currentCard = document.querySelector('.card');
+    let fabFiveItems = document.querySelectorAll('.fab-five-items li a');
     
     btnStart.onclick = () => { startGame(); }
-    btnQuestionmark.onclick = () => { showInstructions(); }
+    btnQuestion.onclick = () => { showInstructions(); }
+    btnDrawCard.onclick = () => { drawCard(); }
+
+
+    // STARTING
 
     function startGame() {
         gameStarted = true;
-        boxIntro.classList.toggle("hidden");
+        body.classList.toggle("game-started");
+        btnQuestion.classList.remove("hidden");
+        btnStart.innerHTML = "Resume Game";
     }
+    
     function showInstructions() {
-        boxIntro.classList.toggle("hidden");
+        body.classList.toggle("game-started");
+    }
+
+    function drawCard() {
+        rounds++;
+        let randomNum = Math.floor(Math.random() * cardDeck.length);
+        let chosenCard = cardDeck[randomNum];
+        let obj1 = chosenCard.items[0];
+        let obj2 = chosenCard.items[1];
+        let solution = chosenCard.solution[0];
+
+        // clear current card
+        currentCard.innerHTML = "";
+
+        // wait two seconds (shuffle animation), then show random card
+        setTimeout(() => {
+            currentCard.innerHTML = `${obj1.shape} ${obj1.color.alias} + ${obj2.shape} ${obj2.color.alias}`;
+        }, 2000);
+        clearTimeout();
+
+        console.log(fabFiveItems);
+        for (let i=0; i < fabFiveItems.length; i++) {
+            fabFiveItems[0].onclick = () => { checkSolution(); }
+        }
+    };
+
+    function checkSolution(){
+        alert(`solution?`)
     }
 }
 
@@ -157,7 +195,7 @@ function createCardDeck(items,colors) {
         for (let j=0; j < falseItems.length; j++) {
             let item02 = falseItemsList[j];
             // - check for unique combination (neither same item nor same color)
-            // - check if no item has original color of other item
+            // - make sure no item has original color of other item
             if (item01.shape !== item02.shape && item01.color.alias !== item02.color.alias && item01.color.alias !== item02.originalColor.alias && item02.color.alias !== item01.originalColor.alias) {
 
                 // find + log solution:
@@ -175,12 +213,12 @@ function createCardDeck(items,colors) {
 
         // remove duplicates
         // for(let l=0; l < cardDeck.length; l++) {
-        //     let firstItem = cardDeck[l][0].name;
-        //     let secondItem = cardDeck[l][1].name;
+        //     let firstItem;
+        //     let secondItem;
 
         //     for (let m=1; m < cardDeck.length - 1; m++) {
-        //         let firstItem2 = cardDeck[l+m][0].name;
-        //         let secondItem2 = cardDeck[l+m][1].name;
+        //         let firstItem2 = cardDeck[l+m][0].shape;
+        //         let secondItem2 = cardDeck[l+m][1].shape;
 
         //         if (firstItem == secondItem2 && firstItem2 == secondItem) {
         //             console.log("found dup");
@@ -189,7 +227,7 @@ function createCardDeck(items,colors) {
         // }
     }
 
-    console.log(`ITEMS:`);
+    console.log(`TRUE ITEMS:`);
     console.log(items);
     console.log(`FALSE ITEMS:`);
     console.log(falseItems);
