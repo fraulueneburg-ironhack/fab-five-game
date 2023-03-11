@@ -47,7 +47,7 @@ window.onload = function(){
         let obj2 = chosenCard.items[randomOneOrZero2];
         rightAnswer = chosenCard.solution[0];
         rounds++;
-        //btnDrawCard.classList.add('hidden');
+        btnDrawCard.classList.add('hidden');
 
         // clear current card
         currentCard.innerHTML = "";
@@ -55,10 +55,8 @@ window.onload = function(){
         // wait 2s (shuffle animation), then show random card
         setTimeout(() => {
             currentCard.innerHTML = `
-            
             <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
             <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>
-            
             `;
             // function countBackwards(e){
             //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
@@ -74,7 +72,7 @@ window.onload = function(){
 
     function checkSolution(clickedElement){
         let clickedAnswer = clickedElement.getAttribute('ffname');
-        //btnDrawCard.classList.remove('hidden');
+        btnDrawCard.classList.remove('hidden');
         if (clickedAnswer == rightAnswer.name) {
             alert(`CORRECT!`);
         } else {
@@ -170,7 +168,7 @@ class Card {
 }
 
 function createCardDeck(items,colors) {
-    // make array of false items (should be 20 total)
+    // create array of false items (20 total)
     // - loop through items, make a deep copy
     let falseItems = [];
     for (let i = 0; i < items.length; i++) {
@@ -185,13 +183,13 @@ function createCardDeck(items,colors) {
         }
     }
 
-    //first set of cards: pairs of 1 true, 1 false item
+    // first set of cards: pairs of 1 true + 1 false item
     // - loop through true items, make a deep copy
     for (let i=0; i < items.length; i++) {
         let trueItemsList = JSON.parse(JSON.stringify(items));
         let falseItemsList = JSON.parse(JSON.stringify(falseItems));
         let item01 = trueItemsList[i];
-        let solution = [item01];    // ????
+        let solution = [item01];
 
         // - loop through false items
         for(let j=0; j < falseItemsList.length; j++) {
@@ -231,19 +229,31 @@ function createCardDeck(items,colors) {
         }
     }
 
-    console.log(`cardDeck w duplicates:`);
-    console.log(cardDeck);
+    // remove duplicate combinations (i.e. BOOK red + BOTTLE white / BOTTLE white + BOOK red)
+    // (using snake case for readability)
+    for(let l=0; l < cardDeck.length - 1; l++) {
+        let card1_item1 = cardDeck[l].items[0];
+        let card1_item2 = cardDeck[l].items[1];
+        let card1_solution = cardDeck[l].solution[0];
 
+        for (let m=cardDeck.length - 1; m > l; m--) {
+            let card2_item1 = cardDeck[m].items[0];
+            let card2_item2 = cardDeck[m].items[1];
+            let card2_solution = cardDeck[m].solution[0];
+        
+            if (card1_item1.shape == card2_item2.shape && card1_item1.color.alias == card2_item2.color.alias &&
+                card2_item1.shape == card1_item2.shape && card2_item1.color.alias == card1_item2.color.alias &&
+                card1_solution.shape == card2_solution.shape && card1_solution.color.name == card2_solution.color.name) {
+                    cardDeck.splice(m,1);
+            }
+        }
+    }
 
+    // console.log(`TRUE ITEMS:`);
+    // console.log(items);
+    // console.log(`FALSE ITEMS:`);
+    // console.log(falseItems);
 }
-
-
-
-
-
-
-
-
 
 function shuffleCards(cardsArr) {
     // Fisher Yates Algorithm
@@ -267,68 +277,6 @@ createCardDeck(itemDefaultArr,colorsDefaultArr);
 // for (let i=0; i < cardDeck.length; i++) {
 //     console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`); // ${cardDeck[i].solution[0].shape}
 // }
-
-
-
-
-
-
-// remove duplicate combinations (i.e. BOOK red + BOTTLE white / BOTTLE white + BOOK red)
-// using snake case for readability
-
-let testArr = JSON.parse(JSON.stringify(cardDeck));
-testArr = testArr.splice(98,11);
-
-console.log(`TESTARRAY:`);
-console.log(testArr);
-function removeDups() {
-    for (let i=0; i < testArr.length; i++) {
-        console.log(`#${i+1}: ${testArr[i].items[0].shape.toUpperCase()} ${testArr[i].items[0].color.alias} + ${testArr[i].items[1].shape.toUpperCase()} ${testArr[i].items[1].color.alias} => ${testArr[i].solution[0].shape}`); // ${cardDeck[i].solution[0].shape}
-    }
-
-    for(let l=0; l < testArr.length - 1; l++) {
-        let deck = testArr;
-        let firstItem = deck[l].items[0];
-        let secondItem = deck[l].items[1];
-        let solution = deck[l].solution[0];
-    
-        for (let m=deck.length - 1; m >= 0; m--) {
-            let firstItem2 = deck[m].items[0];
-            let secondItem2 = deck[m].items[1];
-            let solution2 = deck[m].solution[0];
-        
-            if (firstItem.shape == secondItem2.shape &&
-                firstItem.color.name == secondItem2.color.name &&
-                firstItem2.shape == secondItem.shape &&
-                firstItem2.color.name == secondItem.color.name &&
-                solution.shape == solution2.shape &&
-                solution.color.name == solution2.color.name) {
-                    deck.splice(m,1);
-            }
-        }
-    }
-
-    // console.log(`cardDeck w/o duplicates`);
-    // console.log(cardDeck);
-
-    // console.log(`TRUE ITEMS:`);
-    // console.log(items);
-    // console.log(`FALSE ITEMS:`);
-    // console.log(falseItems);
-}
-
-removeDups();
-
-console.log(`TESTARRAY W/O DUPLICATES:`);
-console.log(testArr);
-
-
-
-
-
-
-
-
 
 shuffleCards(cardDeck);
 
