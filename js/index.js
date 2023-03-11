@@ -35,12 +35,13 @@ window.onload = function(){
     }
 
     function drawCard() {
-        rounds++;
         const randomNum = Math.floor(Math.random() * cardDeck.length);
         const chosenCard = cardDeck[randomNum];
         const obj1 = chosenCard.items[0];
         const obj2 = chosenCard.items[1];
         rightAnswer = chosenCard.solution[0];
+        rounds++;
+        //btnDrawCard.classList.add('hidden');
 
         // clear current card
         currentCard.innerHTML = "";
@@ -67,6 +68,7 @@ window.onload = function(){
 
     function checkSolution(clickedElement){
         let clickedAnswer = clickedElement.getAttribute('ffname');
+        //btnDrawCard.classList.remove('hidden');
         if (clickedAnswer == rightAnswer.name) {
             alert(`CORRECT!`);
         } else {
@@ -242,12 +244,31 @@ function createCardDeck(items,colors) {
     console.log(items);
     console.log(`FALSE ITEMS:`);
     console.log(falseItems);
-    console.log(`CARD DECK:`);
-    console.log(cardDeck);
-    console.log(`CARD DECK AS TEXT:`);
-    for (let i=0; i < cardDeck.length; i++) {
-        console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`); // ${cardDeck[i].solution[0].shape}
-    }
+}
+
+function shuffleCards(cardsArr) {
+    // Fisher Yates Algorithm
+    if (!cardsArr) {
+        return undefined;
+      } else {
+        for (let i = cardsArr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const temp = cardsArr[i];
+          cardsArr[i] = cardsArr[j];
+          cardsArr[j] = temp;
+        }
+        return cardsArr;
+      }
 }
 
 createCardDeck(itemDefaultArr,colorsDefaultArr);
+
+console.log(`UNSHUFFLED CARD DECK:`);
+console.log(cardDeck);
+
+shuffleCards(cardDeck);
+
+console.log(`SHUFFLED CARD DECK AS TEXT:`);
+for (let i=0; i < cardDeck.length; i++) {
+    console.log(`#${i+1}: ${cardDeck[i].items[0].shape.toUpperCase()} ${cardDeck[i].items[0].color.alias} + ${cardDeck[i].items[1].shape.toUpperCase()} ${cardDeck[i].items[1].color.alias} => ${cardDeck[i].solution[0].shape}`); // ${cardDeck[i].solution[0].shape}
+}
