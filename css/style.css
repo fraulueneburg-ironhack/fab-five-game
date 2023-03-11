@@ -341,6 +341,21 @@ ul.fab-five-items {
 }
 
 .card.current {
+    box-sizing: border-box;
+    padding-top: 3rem;
     position: relative;
     z-index: 30;
+}
+
+.card.current > * {
+    display: block;
+    margin: 0 auto;
+}
+
+.card.current > *:first-child {
+    transform: rotate(-20deg);
+}
+
+.card.current > *:last-child {
+    transform: rotate(20deg);
 }
