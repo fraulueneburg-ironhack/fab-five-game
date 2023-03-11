@@ -184,6 +184,10 @@ header {
     padding: 2rem 75px 0;
 }
 
+/* .game-started .logo:hover {
+    cursor: pointer;
+} */
+
 
 /*---------- FOOTER ----------*/
 
@@ -295,6 +299,16 @@ ul.fab-five-items {
     max-width: 100vw;
 }
 
+.card {
+    background: #E8C57E;
+    border-radius: 8px;
+    box-shadow: 0 0 20px 0 rgba(34,34,34,0.5);
+    display: block;
+    height: 280px;
+    margin: 3rem auto 0;
+    width: 210px;
+}
+
 .card:not(.current) {
     position: absolute;
     top: 0;
@@ -329,14 +343,4 @@ ul.fab-five-items {
 .card.current {
     position: relative;
     z-index: 30;
-}
-
-.card {
-    background: #E3B85C;
-    border-radius: 8px;
-    box-shadow: 0 0 20px 0 rgba(34,34,34,0.5);
-    display: block;
-    height: 280px;
-    margin: 3rem auto 0;
-    width: 210px;
 }

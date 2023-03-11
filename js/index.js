@@ -1,10 +1,12 @@
 window.onload = function(){
     let gameStarted = false;
-    let time = 10;
+    let time = 5;
     let rounds = 0;
     let score = 0;
+    let rightAnswer;
 
     let body = document.querySelector('body');
+    let logo = document.querySelector('.logo');
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
     let btnDrawCard = document.querySelector('.btn-draw-card');
@@ -22,6 +24,7 @@ window.onload = function(){
 
     function startGame() {
         gameStarted = true;
+        // logo.onclick = () => { showInstructions(); }
         body.classList.toggle("game-started");
         btnQuestion.classList.remove("hidden");
         btnStart.innerHTML = "Resume Game";
@@ -33,11 +36,11 @@ window.onload = function(){
 
     function drawCard() {
         rounds++;
-        let randomNum = Math.floor(Math.random() * cardDeck.length);
-        let chosenCard = cardDeck[randomNum];
-        let obj1 = chosenCard.items[0];
-        let obj2 = chosenCard.items[1];
-        let solution = chosenCard.solution[0];
+        const randomNum = Math.floor(Math.random() * cardDeck.length);
+        const chosenCard = cardDeck[randomNum];
+        const obj1 = chosenCard.items[0];
+        const obj2 = chosenCard.items[1];
+        rightAnswer = chosenCard.solution[0];
 
         // clear current card
         currentCard.innerHTML = "";
@@ -57,14 +60,18 @@ window.onload = function(){
         }, 2000);
         clearTimeout();
 
-        console.log(fabFiveItems);
         for (let i=0; i < fabFiveItems.length; i++) {
-            fabFiveItems[0].onclick = () => { checkSolution(); }
+            fabFiveItems[i].onclick = () => { checkSolution(fabFiveItems[i]); }
         }
     };
 
-    function checkSolution(){
-        alert(`solution?`)
+    function checkSolution(clickedElement){
+        let clickedAnswer = clickedElement.getAttribute('ffname');
+        if (clickedAnswer == rightAnswer.name) {
+            alert(`CORRECT!`);
+        } else {
+            alert(`No. The right answer is ${rightAnswer.shape}.`);
+        }
     }
 }
 
