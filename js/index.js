@@ -1,7 +1,7 @@
 window.onload = function(){
     let gameStarted = false;
     let time = 5;
-    let rounds = 0;
+    let rounds = 1;
     let score = 0;
     let rightAnswer;
 
@@ -12,13 +12,22 @@ window.onload = function(){
     let btnDrawCard = document.querySelector('.btn-draw-card');
     let timeWrapper = document.querySelector('.time .num');
     let scoreWrapper = document.querySelector('.wins .num');
+    let roundsWrapper = document.querySelector('.rounds .num');
+    let cards = document.querySelectorAll('.cards .card');
     let currentCard = document.querySelector('.card.current');
+    let currentCardBack = document.querySelector('.card.current .back .content');
+
     let fabFiveItems = document.querySelectorAll('.fab-five-items li a');
+    let modal = document.querySelector('.modal');
+    let modalText = document.querySelector('.modal .text');
+    let btnCloseModal = document.querySelectorAll('.close');
     
     btnStart.onclick = () => { startGame(); }
     btnQuestion.onclick = () => { showInstructions(); }
     btnDrawCard.onclick = () => { drawCard(); }
-
+    for (let i=0; i < btnCloseModal.length; i++) {
+        btnCloseModal[i].onclick = () => { closeModal(); }
+    }
 
     // START GAME
 
@@ -35,6 +44,8 @@ window.onload = function(){
     }
 
     function drawCard() {
+
+        // draw a random card
         const randomCardNum = Math.floor(Math.random() * cardDeck.length);
         const chosenCard = cardDeck[randomCardNum];
 
@@ -43,41 +54,67 @@ window.onload = function(){
         let randomOneOrZero2;
         randomOneOrZero == 0 ? randomOneOrZero2 = 1 : randomOneOrZero2 = 0;
 
+        // define two items + solution
         let obj1 = chosenCard.items[randomOneOrZero];
         let obj2 = chosenCard.items[randomOneOrZero2];
         rightAnswer = chosenCard.solution[0];
         rounds++;
         btnDrawCard.classList.add('hidden');
 
-        // clear current card
-        currentCard.innerHTML = "";
-
-        // wait 2s (shuffle animation), then show random card
-        setTimeout(() => {
-            currentCard.innerHTML = `
+        // fill card
+        currentCardBack.innerHTML = `
             <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
             <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>
-            `;
-            // function countBackwards(e){
-            //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
-            // }
-            // setInterval(countBackwards(time),1000);
-        }, 2000);
+        `;
+
+        // css shuffle animation
+        for (let i=0; i < cards.length; i++) {
+            cards[i].style.animation = ('');
+            cards[i].style.animationPlayState = ('running');
+        }
+
+        // wait 2s (shuffle animation), then show random card
+        // check solution on click
+        setTimeout(() => {
+            for (let i=0; i < cards.length; i++) {
+                cards[i].style.animation = ('none');
+                cards[i].style.animationPlayState = ('paused');
+            }
+            currentCard.classList.add('flipped');
+            for (let i=0; i < fabFiveItems.length; i++) {
+                fabFiveItems[i].onclick = () => { checkSolution(fabFiveItems[i]); }
+            }
+        }, 1000);
         clearTimeout();
 
-        for (let i=0; i < fabFiveItems.length; i++) {
-            fabFiveItems[i].onclick = () => { checkSolution(fabFiveItems[i]); }
-        }
+        // function countBackwards(e){
+        //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
+        // }
+        // setInterval(countBackwards(time),1000);
     };
 
     function checkSolution(clickedElement){
         let clickedAnswer = clickedElement.getAttribute('ffname');
-        btnDrawCard.classList.remove('hidden');
+
         if (clickedAnswer == rightAnswer.name) {
-            alert(`CORRECT!`);
+            const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
+            score++;
+            scoreWrapper.innerHTML = `${score}`;
+            modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p>`
         } else {
-            alert(`No. The right answer is ${rightAnswer.shape}.`);
+            modalText.innerHTML = `<h3>Oh no!</h3><p>You were wrong.<br>The right answer is ${rightAnswer.shape}.</p><div class="btn-group"><button class="btn-green btn-ok close">Next Round</button><button class="btn-what">Wait – what?</button></div>`
         }
+        modal.classList.remove("hidden");
+        body.style.overflowY = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.add("hidden");
+        body.style.overflowY = '';
+        currentCard.classList.remove('flipped');
+        rounds < 10 ? roundsWrapper.innerHTML = `0${rounds}` : roundsWrapper.innerHTML = `${rounds}`;
+        btnDrawCard.innerHTML = ('Draw new card');
+        setTimeout(() => { btnDrawCard.classList.remove('hidden'); }, 450);
     }
 }
 
@@ -147,6 +184,8 @@ let itemDefaultArr = [
         originalColor: colorsDefaultArr[4],
     },
 ]
+
+let complimentsArr = ['Wow, very good','Excellent','Brilliant','Marvellous','Extraordinary','Terrific','Fantastic','Amazing','You genius, you','Awesome','Good job','Unbelievable','Incredible','Spectacular','Remarkable','Fabulous','Phenomenal','Sensational','Gorgeous','Impressive','Outstanding','Magnificent','Good work','Phenomenal','Superb','You superhuman, you']
 
 
 // ----- CREATE CARD DECK -----
