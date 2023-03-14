@@ -102,7 +102,7 @@ window.onload = function(){
             scoreWrapper.innerHTML = `${score}`;
             modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p>`
         } else {
-            modalText.innerHTML = `<h3>Oh no!</h3><p>You were wrong.<br>The right answer is ${rightAnswer.shape}.</p><div class="btn-group"><button class="btn-green btn-ok close">Next Round</button><button class="btn-what">Wait – what?</button></div>`
+            modalText.innerHTML = `<h3>Oh no!</h3><p>You were wrong.<br>The right answer is ${rightAnswer.shape}.</p><div class="btn-group"><button class="btn-green btn-ok close">Okay</button><button class="btn-what">Wait – what?</button></div>`
         }
         modal.classList.remove("hidden");
         body.style.overflowY = 'hidden';

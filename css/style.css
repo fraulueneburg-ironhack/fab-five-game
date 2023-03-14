@@ -34,7 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: var(--font-family-default);
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -44,7 +44,7 @@ body {
 }
 
 .container {
-    padding: 0 2rem;
+    padding: 0 1.2rem;
 }
 
 main {
@@ -64,21 +64,16 @@ h1, h2, h3 {
 }
 
 h1 {
-    font-size: 2rem;
+    font-size: 1.87rem;
     margin: 0 0 1rem;
     letter-spacing: 4px;
     line-height: 1.1;
     text-shadow: var(--text-shadow-default);
 }
 
-@media (min-width: 769px) {
-    h1 {
-        font-size: 4rem;
-    }
-}
-
 h2 {
     border-bottom: var(--border-default);
+    line-height: 1.1;
     margin: 0 0 1.5rem;
     display: inline-block;
 }
@@ -98,6 +93,15 @@ a {
     text-decoration: none;
 }
 
+.highlighted {
+    font-weight: bold;
+    background-color: rgba(255,255,255,0.3);
+    padding: 0 5px;
+}
+
+
+/*---------- BUTTONS ----------*/
+
 a, button, .btn {
     cursor: pointer;
     transition: var(--transition-default);
@@ -110,7 +114,7 @@ button, .btn {
     color: var(--color-white);
     display: block;
     font-family: var(--font-family-default);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: bold;
     letter-spacing: 1px;
     margin: 0 auto 15px;
@@ -143,19 +147,13 @@ button:hover,
     margin-right: 10px;
 }
 
-span.highlight {
-    font-weight: bold;
-    background-color: rgba(255,255,255,0.3);
-    padding: 0 5px;
-}
-
 
 /*---------- NAV ----------*/
 
 nav {
     position: absolute;
-    right: 30px;
-    top: 30px;
+    right: 1.5rem;
+    top: 20px;
 }
 
 nav ul,
@@ -179,11 +177,11 @@ nav ul li.question a {
     border-radius: 50%;
     border: var(--border-width-default) solid var(--border-color-default);
     display: block;
-    font-size: 2.4rem;
+    font-size: 2rem;
     font-weight: 700;
-    height: 50px;
+    height: 40px;
     transition: var(--transition-default);
-    width: 50px;
+    width: 40px;
 }
 
 nav ul li.question a:hover {
@@ -199,7 +197,8 @@ header {
     background-color: var(--bg-outer);
     border-bottom: var(--border-width-default) dashed var(--border-color-default);
     position: relative;
-    padding: 2rem 75px 0;
+    padding: 1.5rem 75px 0 0;
+    text-align: left;
 }
 
 /* .game-started .logo:hover {
@@ -213,7 +212,7 @@ footer {
     background-color: var(--bg-outer);
     border-top: var(--border-width-default) dashed var(--border-color-default);
     box-sizing: border-box;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 500;
     height: var(--footer-height);
     padding: 1rem 0;
@@ -226,19 +225,12 @@ footer a {
     border-bottom: 1px solid currentColor;
 }
 
-@media (min-width: 375px) {
-    footer br {
-        display: none;
-    }
-}
-
-@media (min-width: 768px) {
-    footer {
-        text-align: right;
-    }
-}
 
 /*---------- CONTENT ----------*/
+
+.intro {
+    margin-top: 1rem;
+}
 
 .fab-five-items {
     display: flex;
@@ -248,7 +240,7 @@ footer a {
 }
 
 .game-started .fab-five-items {
-    margin: 3rem 0 2rem;
+    margin: 1rem 0 0rem;
 }
 
 .fab-five-items li {
@@ -267,12 +259,6 @@ footer a {
     transform: scale(1.2);
 }
 
-@media (max-width: 1023px) {
-    .intro p br {
-        display: none;
-    }
-}
-
 .game-started .intro {
     display: none;
 }
@@ -285,6 +271,7 @@ footer a {
 
 .game-started .play-head {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .game-started .play-footer {
@@ -300,11 +287,6 @@ footer a {
     margin: 0;
 }
 
-.play-head .wins {
-    order: -1;
-}
-
-
 
 /*---------- CARDS ----------*/
 
@@ -315,6 +297,7 @@ footer a {
     width: auto;
     z-index: 50;
     margin: 0 auto;
+    min-width: 250px;
     left: 50%;
     transform: translate(-50%, -20%);
 }
@@ -486,6 +469,7 @@ footer a {
     border-radius: 10px;
     max-width: 360px;
     margin: 0 auto;
+    min-width: 160px;
     padding: 2.5rem 4rem;
     position: absolute;
     top: 50%;
@@ -514,4 +498,76 @@ footer a {
     position: absolute;
     right: 0;
     top: 0;
+}
+
+
+/*---------- RESPONSIVENESS ----------*/
+
+@media (max-width: 768px) {
+    .play-head .rounds {
+        flex: 0 0 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 769px) {
+    body {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 0 2rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+    }
+
+    button, .btn {
+        font-size: 1.4rem;
+    }
+
+    nav {
+        right: 30px;
+        top: 30px;
+    }
+
+    nav ul li.question a {
+        font-size: 2.4rem;
+        height: 50px;
+        width: 50px;
+    }
+
+    header {
+        padding: 2rem 75px 0;
+        text-align: center;
+    }
+
+    footer {
+        font-size: 1.2rem;
+        text-align: right;
+    }
+
+    .intro {
+        margin-top: 2rem;
+    }
+
+    .fab-five-items svg {
+        height: 120px;
+        width: 120px;
+    }
+
+    .game-started .fab-five-items {
+        margin: 3rem 0 2rem;
+    }
+
+    .play-head .wins {
+        order: -1;
+    }
+}
+
+@media (max-width: 1023px) {
+    .intro p br {
+        display: none;
+    }
 }
