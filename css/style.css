@@ -88,11 +88,6 @@ p {
     margin: 0 0 2rem;
 }
 
-a {
-    color: var(--text-color);
-    text-decoration: none;
-}
-
 .highlighted {
     font-weight: bold;
     background-color: rgba(255,255,255,0.3);
@@ -100,7 +95,12 @@ a {
 }
 
 
-/*---------- BUTTONS ----------*/
+/*---------- LINKS, BUTTONS ----------*/
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}
 
 a, button, .btn {
     cursor: pointer;
@@ -232,6 +232,10 @@ footer a {
     margin-top: 1rem;
 }
 
+.game-started .intro {
+    display: none;
+}
+
 .fab-five-items {
     display: flex;
     justify-content: center;
@@ -259,23 +263,10 @@ footer a {
     transform: scale(1.2);
 }
 
-.game-started .intro {
-    display: none;
-}
-
 .play-head,
 .play-footer {
     display: none;
     position: relative;
-}
-
-.game-started .play-head {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.game-started .play-footer {
-    display: block;
 }
 
 .play-head {
@@ -285,6 +276,15 @@ footer a {
 
 .play-head h2 {
     margin: 0;
+}
+
+.game-started .play-head {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.game-started .play-footer {
+    display: block;
 }
 
 
@@ -338,23 +338,19 @@ footer a {
     25%  { top:-1rem; right: 48%; transform: rotate(7deg); z-index: 70; }
     100% { right: 57%; transform: rotate(-30deg); z-index: 10; }
 }
-
 @keyframes shufflecard2 {
     25%  { top:-1rem; right: 43%; top: 0; transform: rotate(10deg); z-index: 50; }
     100% { right: 50%; top: 3rem; transform: rotate(-20deg); }
 }
-
 @keyframes shufflecard3 {
     10% { margin-top: 4rem; }
     25% { margin-top: 4rem }
     30% { margin-top: 3rem }
 }
-
 @keyframes shufflecard4 {
     25%  { top:-1rem; left: 43%; top: 0; transform: rotate(-10deg); z-index: 60; }
     100% { left: 50%; top: 3rem; transform: rotate(20deg); }
 }
-
 @keyframes shufflecard5 {
     25%  { top:-1rem; left: 48%; transform: rotate(-7deg); z-index: 80; }
     100% { left: 57%; transform: rotate(30deg); z-index: 10; }
@@ -430,6 +426,8 @@ footer a {
     transform: rotateY(180deg);
 }
 
+/* items on card */
+
 .card.current .content {
     left: 50%;
     transform: translate(-50%, -50%);
@@ -449,6 +447,7 @@ footer a {
 .card.current .content > *:last-child {
     transform: rotate(20deg);
 }
+
 
 /*---------- MODALS ----------*/
 
@@ -507,6 +506,12 @@ footer a {
     .play-head .rounds {
         flex: 0 0 100%;
         margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 500px) {
+    .game-started .play-footer {
+        margin-top: 3rem;
     }
 }
 
