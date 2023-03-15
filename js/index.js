@@ -1,6 +1,7 @@
 window.onload = function(){
     let gameStarted = false;
-    let time = 5;
+    let timeMax = 5;
+    let time = timeMax;
     let rounds = 1;
     let score = 0;
     let rightAnswer;
@@ -73,7 +74,7 @@ window.onload = function(){
             cards[i].style.animationPlayState = ('running');
         }
 
-        // wait 2s (shuffle animation), then show random card
+        // wait 1s (css shuffle animation), then show random card
         // check solution on click
         setTimeout(() => {
             for (let i=0; i < cards.length; i++) {
@@ -82,18 +83,31 @@ window.onload = function(){
             }
             currentCard.classList.add('flipped');
             for (let i=0; i < fabFiveItems.length; i++) {
-                fabFiveItems[i].onclick = () => { checkSolution(fabFiveItems[i]); }
+                fabFiveItems[i].onclick = () => {
+                    checkSolution(fabFiveItems[i]);
+                    clearInterval(countBackwards);
+                    time = timeMax;
+                }
             }
         }, 1000);
         clearTimeout();
 
-        // function countBackwards(e){
-        //     e >= 0 ? timeWrapper.innerHTML = e-- : timeWrapper.innerHTML = 0;
-        // }
-        // setInterval(countBackwards(time),1000);
+        const countBackwards = setInterval(function () {
+            if (time > 0) {
+                timeWrapper.innerHTML = time;
+                time--;
+            } else {
+                timeWrapper.innerHTML = time;
+                modalText.innerHTML = `<h3>Oh no! The time is up!</h3><p>Don’t worry.<br>You’ll be quicker next time.</p><button class="btn-green">Next Round</button>`
+                modal.classList.remove("hidden");
+                body.style.overflowY = 'hidden';
+                clearInterval(countBackwards);
+                time = timeMax;
+            }
+        }, 1000);
     };
 
-    function checkSolution(clickedElement){
+    function checkSolution(clickedElement) {
         let clickedAnswer = clickedElement.getAttribute('ffname');
 
         if (clickedAnswer == rightAnswer.name) {
@@ -102,7 +116,8 @@ window.onload = function(){
             scoreWrapper.innerHTML = `${score}`;
             modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p>`
         } else {
-            modalText.innerHTML = `<h3>Oh no!</h3><p>You were wrong.<br>The right answer is ${rightAnswer.shape}.</p><div class="btn-group"><button class="btn-green btn-ok close">Okay</button><button class="btn-what">Wait – what?</button></div>`
+            const randomPityNum = Math.floor(Math.random() * pityArr.length);
+            modalText.innerHTML = `<h3>${pityArr[randomPityNum]}</h3><p>The right answer is ${rightAnswer.shape}.</p><div class="btn-group"><button class="btn-green btn-ok close">Okay</button><button class="btn-what">Wait – what?</button></div>`
         }
         modal.classList.remove("hidden");
         body.style.overflowY = 'hidden';
@@ -115,7 +130,22 @@ window.onload = function(){
         rounds < 10 ? roundsWrapper.innerHTML = `0${rounds}` : roundsWrapper.innerHTML = `${rounds}`;
         btnDrawCard.innerHTML = ('Draw new card');
         setTimeout(() => { btnDrawCard.classList.remove('hidden'); }, 450);
+        time = timeMax;
+        timeWrapper.innerHTML = time;
     }
+
+    // add custom styles to body
+    // const customStyle = `
+    //     <style>
+    //         :root {
+    //             --item01-color: #ff00ff;
+    //             --item02-color: #00ff00;
+    //             --item03-color: #00ffff;
+    //             --item04-color: #ffff00;
+    //             --item05-color: #6e02c1;
+    //         }
+    //     </style>`;
+    // body.insertAdjacentHTML("afterbegin", customStyle);
 }
 
 let colorsDefaultArr = [
@@ -185,8 +215,8 @@ let itemDefaultArr = [
     },
 ]
 
-let complimentsArr = ['Wow, very good','Excellent','Brilliant','Marvellous','Extraordinary','Terrific','Fantastic','Amazing','You genius, you','Awesome','Good job','Unbelievable','Incredible','Spectacular','Remarkable','Fabulous','Phenomenal','Sensational','Gorgeous','Impressive','Outstanding','Magnificent','Good work','Phenomenal','Superb','You superhuman, you']
-
+const complimentsArr = ['Woah. Very good','Excellent','Brilliant','Marvellous','Extraordinary','Terrific','Fantastic','Amazing','You genius, you','Awesome','Good job','Unbelievable','Incredible','Spectacular','Remarkable','Fabulous','Phenomenal','Sensational','Gorgeous','Impressive','Outstanding','Magnificent','Good work','Phenomenal','Superb','You superhuman, you','OMG','Wow. You’re good','Wowza','Absolutely stunning']
+const pityArr = ['Oh no!','Oh nooooo!','Nope.','Too bad!','Almost. Almost.','Quel malheur!','Bummer','Oooh, that was close!','You were sooo close!','Aaaargh, next time.','Sorryyy …','So sorry …','Apologies.','Pardon.','Uh-oh.','Sad but true:']
 
 // ----- CREATE CARD DECK -----
 
