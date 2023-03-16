@@ -2,17 +2,17 @@
     let timeMax = timeMaxInitial;
     let time = timeMax;
     let rounds = 1;
-    let roundsMax = 2;
+    let roundsMax = 25;
     let score = 0;
     let wins = 0;
     let rightAnswer;
     let gameover = false;
 
-    // let logo = document.querySelector('.logo');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
     let body = document.body;
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
+    let btnExamples = document.querySelector('.btn-example');
     let btnColorMode = document.querySelector('.btn-color-mode');
     let btnDrawCard = document.querySelector('.btn-draw-card');
     let btnNextRound = document.querySelector('.btn-next-round');
@@ -31,9 +31,11 @@
     
     timeWrapper.innerHTML = time;
 
-    btnStart.onclick = () => { startGame(); }
+    btnExamples.onclick = () => { showExamples(); }
+    btnStart.onclick    = () => { startGame(); }
     btnQuestion.onclick = () => { showInstructions(); }
     btnDrawCard.onclick = () => { drawCard(); }
+
     for (let i=0; i < btnCloseModal.length; i++) {
         btnCloseModal[i].onclick = () => { closeModal(); }
     }
@@ -41,14 +43,22 @@
     // START GAME
 
     function startGame() {
-        // logo.onclick = () => { showInstructions(); }
         body.classList.toggle('game-started');
         btnQuestion.classList.remove('hidden');
         btnStart.innerHTML = 'Resume Game';
     }
     
     function showInstructions() {
+        btnExamples.classList.remove('hidden');
+        document.querySelector('.intro-text').classList.remove('hidden');
+        document.querySelector('.example-text').classList.add('hidden');
         body.classList.toggle('game-started');
+    }
+
+    function showExamples() {
+        document.querySelector('.intro-text').classList.add('hidden');
+        document.querySelector('.example-text').classList.remove('hidden');
+        btnExamples.classList.add('hidden');
     }
 
     function drawCard() {
@@ -71,8 +81,8 @@
 
         // fill card
         currentCardBack.innerHTML = `
-            <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
-            <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>
+            <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.cssColor};"><use href="#${obj1.name}"></svg>
+            <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.cssColor};"><use href="#${obj2.name}"></svg>
         `;
 
         btnWhat.onclick = () => {
@@ -85,16 +95,16 @@
             if ((rightAnswer.shape == obj1.shape && rightAnswer.color.alias == obj1.color.alias ) || (rightAnswer.shape == obj2.shape && rightAnswer.color.alias == obj2.color.alias )) {
                 explanation = `
                     <div class="images">
-                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.cssColor};"><use href="#${rightAnswer.name}"></svg>
                     </div>
                     <p>The ${rightAnswer.shape} is the right answer because it is <strong>shown in its original color</strong> on the card.<p>`;
             }
             else {
                 explanation = `
                     <div class="images">
-                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
-                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>→
-                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.cssColor};"><use href="#${obj1.name}"></svg>
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.cssColor};"><use href="#${obj2.name}"></svg>→
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.cssColor};"><use href="#${rightAnswer.name}"></svg>
                     </div>
                     <p><strong>None of the objects</strong> on the card are shown in their <strong>original color</strong>.</p><p>Hence, ${rightAnswer.shape} is the right answer because it is the only item whose <strong>shape or color cannot</strong> be found on the card.<p>
                 `;
@@ -161,21 +171,26 @@
             if (wins == 3 && rounds != roundsMax) {
                 modal.classList.add('modal-levelup');
                 timeMax = timeMax - 2;
-                response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
+                response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else if (wins == 8 && rounds != roundsMax) {
                 modal.classList.add('modal-levelup');
                 timeMax = timeMax - 2;
-                response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
-            } else {
+                response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`
+            } else if (wins == 15 && rounds != roundsMax) {
+                modal.classList.add('modal-levelup');
+                timeMax = timeMax - 1;
+                response = `<p>Really impressive.</p><p>Your brain is unstoppable!<br>To keep things interesting, let’s level up one last time and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`
+            }
+            else {
                 btnWhat.innerHTML = `See why`;
                 response = `<p>That was the right answer.</p>`
             }
             modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3>` + response;
         } else {
-            btnWhat.innerHTML = `Wait – what?`;
-            const randomPityNum = Math.floor(Math.random() * pityArr.length);
             modal.classList.add('modal-wrong');
+            const randomPityNum = Math.floor(Math.random() * pityArr.length);
             modalText.innerHTML = `<h3>${pityArr[randomPityNum]}</h3><p>The right answer is ${rightAnswer.shape}.</p>`
+            btnWhat.innerHTML = `Wait – what?`;
         }
         modal.classList.remove('hidden');
         body.style.overflowY = 'hidden';
@@ -242,27 +257,27 @@ let colorsDefaultArr = [
     {
         name: "color01",
         alias: "red",
-        hex: "#de1f26",
+        cssColor: "var(--item01-color)",
     },
     {
         name: "color02",
         alias: "green",
-        hex: "#197f36",
+        cssColor: "var(--item02-color)",
     },
     {
         name: "color03",
         alias: "blue",
-        hex: "#4c5aa8",
+        cssColor: "var(--item03-color)",
     },
     {
         name: "color04",
         alias: "white",
-        hex: "#eee8e7",
+        cssColor: "var(--item04-color)",
     },
     {
         name: "color05",
         alias: "grey",
-        hex: "#747484",
+        cssColor: "var(--item05-color)",
     },
 ]
 
@@ -271,35 +286,30 @@ let itemDefaultArr = [
     {
         name: "item01",
         shape: "chair",
-        imageSrc: "../img/item01.svg",
         color: colorsDefaultArr[0],
         originalColor: colorsDefaultArr[0],
     },
     {
         name: "item02",
         shape: "bottle",
-        imageSrc: "../img/item02.svg",
         color: colorsDefaultArr[1],
         originalColor: colorsDefaultArr[1],
     },
     {
         name: "item03",
         shape: "book",
-        imageSrc: "../img/item03.svg",
         color: colorsDefaultArr[2],
         originalColor: colorsDefaultArr[2],
     },
     {
         name: "item04",
         shape: "ghost",
-        imageSrc: "../img/item04.svg",
         color: colorsDefaultArr[3],
         originalColor: colorsDefaultArr[3],
     },
     {
         name: "item05",
         shape: "mouse",
-        imageSrc: "../img/item05.svg",
         color: colorsDefaultArr[4],
         originalColor: colorsDefaultArr[4],
     },
@@ -312,27 +322,27 @@ let colorsNightArr = [
     {
         name: "color01",
         alias: "pink",
-        hex: "#ff00ff",
+        cssColor: "var(--item01-color)",
     },
     {
         name: "color02",
         alias: "neongreen",
-        hex: "#08dd08",
+        cssColor: "var(--item02-color)",
     },
     {
         name: "color03",
         alias: "cyan",
-        hex: "#00dae6",
+        cssColor: "var(--item03-color)",
     },
     {
         name: "color04",
         alias: "yellow",
-        hex: "#ffff00",
+        cssColor: "var(--item04-color)",
     },
     {
         name: "color05",
         alias: "purple",
-        hex: "#6e02c1",
+        cssColor: "var(--item05-color)",
     },
 ]
 
@@ -340,35 +350,30 @@ let itemNightArr = [
     {
         name: "item01",
         shape: "chair",
-        imageSrc: "../img/item01.svg",
         color: colorsNightArr[0],
         originalColor: colorsNightArr[0],
     },
     {
         name: "item02",
         shape: "bottle",
-        imageSrc: "../img/item02.svg",
         color: colorsNightArr[1],
         originalColor: colorsNightArr[1],
     },
     {
         name: "item03",
         shape: "book",
-        imageSrc: "../img/item03.svg",
         color: colorsNightArr[2],
         originalColor: colorsNightArr[2],
     },
     {
         name: "item04",
         shape: "ghost",
-        imageSrc: "../img/item04.svg",
         color: colorsNightArr[3],
         originalColor: colorsNightArr[3],
     },
     {
         name: "item05",
         shape: "mouse",
-        imageSrc: "../img/item05.svg",
         color: colorsNightArr[4],
         originalColor: colorsNightArr[4],
     },
@@ -502,50 +507,32 @@ function shuffleCards(cardsArr) {
 
 if (prefersDarkScheme.matches) {
     cardDeck = [];
+    document.documentElement.classList.remove('light-theme');
+    document.documentElement.classList.toggle('dark-theme');
     createCardDeck(itemNightArr,colorsNightArr);
 }
 else {
     cardDeck = [];
+    document.documentElement.classList.remove('dark-theme');
+    document.documentElement.classList.toggle('light-theme');
     createCardDeck(itemDefaultArr,colorsDefaultArr);
 }
 
 btnColorMode.addEventListener('click', function () {
     if (prefersDarkScheme.matches) {
         cardDeck = [];
-        createCardDeck(itemNightArr,colorsNightArr);
-        document.body.classList.toggle('dark-theme');
-        document.documentElement.setAttribute('data-theme', 'dark');
+        createCardDeck(itemDefaultArr,colorsDefaultArr);
+        document.documentElement.classList.toggle('light-theme');
+        //document.documentElement.toggleAttribute('data-theme');
     } else {
         cardDeck = [];
         createCardDeck(itemNightArr,colorsNightArr);
-        document.body.classList.toggle('light-theme');
-        document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.classList.remove('light-theme');
+        document.documentElement.classList.toggle('dark-theme');
+        // document.documentElement.removeAttribute('data-theme');
+        // document.documentElement.setAttribute('data-theme', 'dark');
     }
 });
-
-
-// function changeColor() {
-
-
-//     if (mode == 'light') {
-//         colorMode = 'dark';
-
-//         // create card deck
-//         cardDeck = [];
-//         createCardDeck(itemNightArr,colorsNightArr);
-
-//     } else {
-//         colorMode = 'light';
-
-//         // remove dark stylesheet
-//         let darkStyleSheet = document.getElementById('darkStyle');
-//         darkStyleSheet.remove();
-
-//         // create card deck
-//         cardDeck = [];
-//         createCardDeck(itemDefaultArr,colorsDefaultArr);
-//     }
-// }
 
 // console.log(`UNSHUFFLED CARD DECK:`);
 // console.log(cardDeck);
