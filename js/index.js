@@ -1,17 +1,18 @@
-window.onload = function(){
     let timeMax = 5;
     let time = timeMax;
     let rounds = 1;
-    let roundsMax = 4;
+    let roundsMax = 20;
     let score = 0;
     let wins = 0;
     let rightAnswer;
-    let gameover = false; 
+    let gameover = false;
+    let colorMode = 'light';
 
     let body = document.body;
-    let logo = document.querySelector('.logo');
+    // let logo = document.querySelector('.logo');
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
+    let btnColorMode = document.querySelector('.btn-color-mode');
     let btnDrawCard = document.querySelector('.btn-draw-card');
     let btnNextRound = document.querySelector('.btn-next-round');
     let timeWrapper = document.querySelector('.time .num');
@@ -31,6 +32,7 @@ window.onload = function(){
 
     btnStart.onclick = () => { startGame(); }
     btnQuestion.onclick = () => { showInstructions(); }
+    btnColorMode.onclick = () => { changeColor(colorMode); }
     btnDrawCard.onclick = () => { drawCard(); }
     for (let i=0; i < btnCloseModal.length; i++) {
         btnCloseModal[i].onclick = () => { closeModal(); }
@@ -195,13 +197,17 @@ window.onload = function(){
             body.classList.toggle('round-started');
             rounds == roundsMax - 1 ? btnDrawCard.innerHTML = ('Draw final card') : btnDrawCard.innerHTML = ('Draw new card');
             rounds++;
-            time = timeMax;
         } else {
-            btnStart.innerHTML = 'Start Game';
+            // open gameover modal after close
             modal.className = 'modal modal-gameover';
-            modalText.innerHTML = `<h3>Amazing!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><p>Give yourself a pat on the back.<br>And don’t forget to screenshot this so you can brag about it at your highschool reunion.<br>(Take that, fifth grade math teacher!)</p>`;
+            const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
+            let textVeryGood = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><p>Give yourself a pat on the back.<br>And don’t forget to screenshot this so you can brag about it at your highschool reunion.<br>(Take that, fifth grade math teacher!)</p>`;
+            let textGood = `<h3>Congratulations!</h3><p>You scored <strong>${wins} out of ${rounds} rounds.</strong><br>Want to play again and try to top this score?</p>`;
+            wins >= roundsMax*0.72 ? modalText.innerHTML = textVeryGood : modalText.innerHTML = textGood;
+
+            // reset game
+            btnStart.innerHTML = 'Start Game';
             timeMax = 5;
-            time = timeMax;
             rounds = 0;
             wins = 0;
             score = 0;
@@ -209,6 +215,9 @@ window.onload = function(){
             btnDrawCard.innerHTML = ('Draw card');
             gameover = false;
         }
+
+        // reset time
+        time = timeMax;
         timeWrapper.innerHTML = time;
 
         // update rounds
@@ -222,19 +231,7 @@ window.onload = function(){
         }
     }
 
-    // add custom styles to body
-    // const customStyle = `
-    //     <style>
-    //         :root {
-    //             --item01-color: #ff00ff;
-    //             --item02-color: #00ff00;
-    //             --item03-color: #00ffff;
-    //             --item04-color: #ffff00;
-    //             --item05-color: #6e02c1;
-    //         }
-    //     </style>`;
-    // body.insertAdjacentHTML("afterbegin", customStyle);
-}
+// first set of colors and items
 
 let colorsDefaultArr = [
     {
@@ -303,9 +300,78 @@ let itemDefaultArr = [
     },
 ]
 
+
+// second set of colors and items
+
+let colorsNightArr = [
+    {
+        name: "color01",
+        alias: "pink",
+        hex: "#ff00ff",
+    },
+    {
+        name: "color02",
+        alias: "neongreen",
+        hex: "#00ff00",
+    },
+    {
+        name: "color03",
+        alias: "cyan",
+        hex: "#00ffff",
+    },
+    {
+        name: "color04",
+        alias: "yellow",
+        hex: "#ffff00",
+    },
+    {
+        name: "color05",
+        alias: "purple",
+        hex: "#6e02c1",
+    },
+]
+
+let itemNightArr = [
+    {
+        name: "item01",
+        shape: "chair",
+        imageSrc: "../img/item01.svg",
+        color: colorsNightArr[0],
+        originalColor: colorsNightArr[0],
+    },
+    {
+        name: "item02",
+        shape: "bottle",
+        imageSrc: "../img/item02.svg",
+        color: colorsNightArr[1],
+        originalColor: colorsNightArr[1],
+    },
+    {
+        name: "item03",
+        shape: "book",
+        imageSrc: "../img/item03.svg",
+        color: colorsNightArr[2],
+        originalColor: colorsNightArr[2],
+    },
+    {
+        name: "item04",
+        shape: "ghost",
+        imageSrc: "../img/item04.svg",
+        color: colorsNightArr[3],
+        originalColor: colorsNightArr[3],
+    },
+    {
+        name: "item05",
+        shape: "mouse",
+        imageSrc: "../img/item05.svg",
+        color: colorsNightArr[4],
+        originalColor: colorsNightArr[4],
+    },
+]
+
 const complimentsArr = ['Woah. Very good','Excellent','Brilliant','Marvellous','Extraordinary','Terrific','Fantastic','Amazing','You genius, you','Awesome','Good job','Unbelievable','Incredible','Spectacular','Remarkable','Fabulous','Phenomenal','Sensational','Gorgeous','Impressive','Outstanding','Magnificent','Splendid','Good work','Phenomenal','Superb','You superhuman, you','OMG','Wowza','Absolutely stunning','Sweet']
 const pityArr = ['Oh no!','Oh nooooo!','Nope.','Too bad!','Almost. Almost.','Quel malheur!','Bummer','Oooh, that was close!','You were sooo close!','Aaaargh, next time.','Sorryyy …','So sorry …','Apologies.','Pardon.','Uh-oh.','Sad but true:']
-const encouragementsArr = ['Rome wasn’t built in a day.','It happens to the best of us.','You’ll be quicker next round.','We still believe in you.','This is tough, but you’re tougher.','You got this!','The next round will be your round.','In the middle of difficulty lies opportunity.','Your are stronger than you think.','Optimism is the faith that leads to achievement.','We believe in you. And unicorns. But mostly you.','True champions, like the sun, cannot be eclipsed for long.','We’ve seen slower people play this game.','The ability to triumph begins with you. Always.','You’re doing exactly what you should be doing. Hang in there and hold your head up high.','A champion is defined not by their wins but by how they recover when they fall.','This difficult time is just a stepping stone along the path to something better.','Things are going to start looking up soon.','It doesn’t matter how slow you go as long as you don’t stop.','Faith can move mountains.','This, too, shall pass.','One day, you’ll look back on this period in your life and be so glad that you never gave up.','Confidence is the most beautiful thing you can wear.','The only time you run out of chances is when you stop taking them.','Every round may not be a good round, but there’s something good in every round.','You grow through what you go through.','Sometimes you win, sometimes you learn.','Success doesn’t come from what you do occasionally. It comes from what you do consistently.','Every accomplishment starts with the decision to try.','Sometimes you win, sometimes you learn.','The best view comes after the hardest climb.','It doesn’t matter how far down you fall as long as you can still look up and see the stars.']
+const encouragementsArr = ['Rome wasn’t built in a day.','It happens to the best of us.','You’ll be quicker next round.','We still believe in you.','We know this is tough, but you’re tougher.','You got this!','The next round will be your round.','In the middle of difficulty lies opportunity.','Your are stronger than you think.','Optimism is the faith that leads to success.','We believe in you. And unicorns. But mostly you.','True champions, like the sun, cannot be eclipsed for long.','We’ve seen slower people play this game.','The ability to triumph begins with you. Always.','A champion is defined not by their wins but by how they recover when they fall.','This difficult time is just a stepping stone along the path to something better.','Things are going to start looking up soon.','It doesn’t matter how slow you go as long as you don’t stop.','Faith can move mountains.','This, too, shall pass.','One day, you’ll look back on this period in your life and be so glad that you never gave up.','Confidence is the most beautiful thing you can wear.','The only time you run out of chances is when you stop taking them.','Every round may not be a good round, but there’s something good in every round.','You grow through what you go through.','Sometimes you win, sometimes you learn.','Success doesn’t come from what you do occasionally. It comes from what you do consistently.','Every accomplishment starts with the decision to try.','Sometimes you win, sometimes you learn.','The best view comes after the hardest climb.','It doesn’t matter how far down you fall as long as you can still look up and see the stars.']
 
 
 // ----- CREATE CARD DECK -----
@@ -430,6 +496,51 @@ function shuffleCards(cardsArr) {
 }
 
 createCardDeck(itemDefaultArr,colorsDefaultArr);
+
+function changeColor(mode) {
+    if (mode == 'light') {
+        colorMode = 'dark';
+
+        // add custom styles to body
+        const customStyle = `
+            <style id="darkStyle">
+                :root {
+                    --item01-color: ${itemNightArr[0].color.hex};
+                    --item02-color: ${itemNightArr[1].color.hex};
+                    --item03-color: ${itemNightArr[2].color.hex};
+                    --item04-color: ${itemNightArr[3].color.hex};
+                    --item05-color: ${itemNightArr[4].color.hex};
+                    --bg-inner: #276d63;
+                    --bg-outer: #132b34;
+                    --bg-lighter: #276d63;
+                    --color-text: #f0f0f0;
+                    --bg-modal: rgba(39 109 99 / 90%);
+                    --item-fill-color: var(--bg-inner);
+                }
+
+                .modal,
+                .modal .content {
+                    backdrop-filter: blur(2px);
+                }
+            </style>`;
+        document.body.insertAdjacentHTML("afterbegin", customStyle);
+
+        // create card deck
+        cardDeck = [];
+        createCardDeck(itemNightArr,colorsNightArr);
+
+    } else {
+        colorMode = 'light';
+
+        // remove dark stylesheet
+        let darkStyleSheet = document.getElementById('darkStyle');
+        darkStyleSheet.remove();
+
+        // create card deck
+        cardDeck = [];
+        createCardDeck(itemDefaultArr,colorsDefaultArr);
+    }
+}
 
 // console.log(`UNSHUFFLED CARD DECK:`);
 // console.log(cardDeck);

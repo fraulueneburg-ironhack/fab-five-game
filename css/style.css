@@ -1,14 +1,18 @@
 :root {
     --color-white: #fff;
+    --bg-inner: #e3b95e;
     --bg-outer: #dba12d;
+    --bg-lighter: #E8C57E;
 
     --item01-color: #de1f26;
     --item02-color: #197f36;
     --item03-color: #4c5aa8;
     --item04-color: #eee8e7;
     --item05-color: #747484;
+    --item-fill-color: #fff;
 
-    --color-text: #222222;
+    --color-text: #222;
+    --color-btn: #fff;
     --border-color-default: var(--color-text);
     --border-width-default: 4px;
     --border-style-default: solid;
@@ -19,6 +23,7 @@
     --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
     --bg-btn: var(--item03-color);
     --bg-btn-ok: var(--item02-color);
+    --bg-modal: var(--color-white);
 
     --size-mobile-max: 425px;
     --size-tablet-max: 768px;
@@ -46,7 +51,7 @@ body {
 }
 
 main {
-    background: radial-gradient(#e3b95e 0%, var(--bg-outer) 75%);
+    background: radial-gradient(var(--bg-inner) 0%, var(--bg-outer) 75%);
     flex: 1;
     padding: 2rem 0 3rem;
 }
@@ -109,7 +114,7 @@ button, .btn {
     background-color: var(--bg-btn);
     border-radius: 8px;
     border: none;
-    color: var(--color-white);
+    color: var(--color-btn);
     display: block;
     font-family: var(--font-family-default);
     font-size: 1.2rem;
@@ -333,7 +338,7 @@ footer a {
     animation-duration: 0.8s;
     animation-play-state: paused;
     animation-iteration-count: 2s;
-    background: repeating-linear-gradient( 45deg, #E8C57E, #E8C57E 10px, #dba12d 10px, #dba12d 20px);
+    background: repeating-linear-gradient( 45deg, var(--bg-lighter), var(--bg-lighter) 10px, var(--bg-outer) 10px, var(--bg-outer) 20px);
     border-radius: 8px;
     box-shadow: 0 0 20px 0 rgba(34,34,34,0.5);
     display: block;
@@ -433,11 +438,11 @@ footer a {
 }
 
 .card.current .front {
-    background: repeating-linear-gradient( 45deg, #E8C57E, #E8C57E 10px, #dba12d 10px, #dba12d 20px);
+    background: repeating-linear-gradient( 45deg, var(--bg-lighter), var(--bg-lighter) 10px, var(--bg-outer) 10px, var(--bg-outer) 20px);
 }
 
 .card.current .back {
-    background: #E8C57E;
+    background: var(--bg-lighter);
     transform: rotateY(180deg);
 }
 
@@ -479,7 +484,7 @@ footer a {
 }
 
 .modal .content {
-    background-color: var(--color-white);
+    background-color: var(--bg-modal);
     border-radius: 10px;
     max-width: 220px;
     margin: 0 auto;
