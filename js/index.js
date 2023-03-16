@@ -13,6 +13,7 @@ window.onload = function(){
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
     let btnDrawCard = document.querySelector('.btn-draw-card');
+    let btnNextRound = document.querySelector('.btn-next-round');
     let timeWrapper = document.querySelector('.time .num');
     let scoreWrapper = document.querySelector('.wins .num');
     let roundsWrapper = document.querySelector('.rounds h2');
@@ -128,6 +129,7 @@ window.onload = function(){
                 timeWrapper.innerHTML = time;
                 time--;
             } else {
+                rounds < roundsMax ? btnNextRound.innerHTML = 'Next Round' : btnNextRound.innerHTML = 'See Score';
                 randomEncouragementNum = Math.floor(Math.random() * encouragementsArr.length);
                 timeWrapper.innerHTML = time;
                 modalText.innerHTML = `<h3>Oh no! The time is up!</h3><p>But don’t worry.<br>${encouragementsArr[randomEncouragementNum]}</p>`
@@ -144,6 +146,8 @@ window.onload = function(){
     function checkSolution(clickedElement) {
         let clickedAnswer = clickedElement.getAttribute('ffname');
 
+        rounds < roundsMax ? btnNextRound.innerHTML = 'Next Round' : btnNextRound.innerHTML = 'See Score';
+
         if (clickedAnswer == rightAnswer.name) {
             let response;
             const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
@@ -151,10 +155,10 @@ window.onload = function(){
             wins++;
             scoreWrapper.innerHTML = `${score}`;
             modal.classList.add('modal-right');
-            if (wins == 3) {
+            if (wins == 3 && rounds != roundsMax) {
                 timeMax--;
                 response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
-            } else if (wins == 8) {
+            } else if (wins == 8 && rounds != roundsMax) {
                 timeMax--;
                 response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else {
@@ -186,15 +190,18 @@ window.onload = function(){
             btnDrawCard.classList.remove('hidden');
         }, 450);
         
+        // if not/if gameover
         if (!gameover) {
             body.classList.toggle('round-started');
-            btnDrawCard.innerHTML = ('Draw new card');
+            rounds == roundsMax - 1 ? btnDrawCard.innerHTML = ('Draw final card') : btnDrawCard.innerHTML = ('Draw new card');
             rounds++;
             time = timeMax;
         } else {
+            btnStart.innerHTML = 'Start Game';
             modal.className = 'modal modal-gameover';
             modalText.innerHTML = `<h3>Amazing!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><p>Give yourself a pat on the back.<br>And don’t forget to screenshot this so you can brag about it at your highschool reunion.<br>(Take that, fifth grade math teacher!)</p>`;
             timeMax = 5;
+            time = timeMax;
             rounds = 0;
             wins = 0;
             score = 0;
@@ -203,6 +210,8 @@ window.onload = function(){
             gameover = false;
         }
         timeWrapper.innerHTML = time;
+
+        // update rounds
         if (rounds == roundsMax) {
             roundsWrapper.innerHTML = `FINAL ROUND!`;
             gameover = true;
