@@ -79,14 +79,18 @@ window.onload = function(){
             let explanation;
             if ((rightAnswer.shape == obj1.shape && rightAnswer.color.alias == obj1.color.alias ) || (rightAnswer.shape == obj2.shape && rightAnswer.color.alias == obj2.color.alias )) {
                 explanation = `
-                    <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                    <div class="images">
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                    </div>
                     <p>The ${rightAnswer.shape} is the right answer because it is <strong>shown in its original color</strong> on the card.<p>`;
             }
             else {
                 explanation = `
-                    <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
-                    <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>→
-                    <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                    <div class="images">
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj1.color.hex};"><use href="#${obj1.name}"></svg>
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${obj2.color.hex};"><use href="#${obj2.name}"></svg>→
+                        <svg height="100" width="100" aria-hidden="true" style="color: ${rightAnswer.color.hex};"><use href="#${rightAnswer.name}"></svg>
+                    </div>
                     <p><strong>None of the objects</strong> on the card are shown in their <strong>original color</strong>.</p><p>Hence, ${rightAnswer.shape} is the right answer because it is the only item whose <strong>shape or color cannot</strong> be found on the card.<p>
                 `;
             }
