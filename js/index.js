@@ -1,15 +1,16 @@
-    let timeMax = 5;
+    let timeMaxInitial = 8;
+    let timeMax = timeMaxInitial;
     let time = timeMax;
     let rounds = 1;
-    let roundsMax = 20;
+    let roundsMax = 2;
     let score = 0;
     let wins = 0;
     let rightAnswer;
     let gameover = false;
-    let colorMode = 'light';
 
-    let body = document.body;
     // let logo = document.querySelector('.logo');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    let body = document.body;
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
     let btnColorMode = document.querySelector('.btn-color-mode');
@@ -32,7 +33,6 @@
 
     btnStart.onclick = () => { startGame(); }
     btnQuestion.onclick = () => { showInstructions(); }
-    btnColorMode.onclick = () => { changeColor(colorMode); }
     btnDrawCard.onclick = () => { drawCard(); }
     for (let i=0; i < btnCloseModal.length; i++) {
         btnCloseModal[i].onclick = () => { closeModal(); }
@@ -125,7 +125,7 @@
         }, 1000);
         clearTimeout();
 
-        // when time is up
+        // if time is up
         const countBackwards = setInterval(function () {
             if (time > 0) {
                 timeWrapper.innerHTML = time;
@@ -134,6 +134,7 @@
                 rounds < roundsMax ? btnNextRound.innerHTML = 'Next Round' : btnNextRound.innerHTML = 'See Score';
                 randomEncouragementNum = Math.floor(Math.random() * encouragementsArr.length);
                 timeWrapper.innerHTML = time;
+                btnWhat.innerHTML = `See answer`;
                 modalText.innerHTML = `<h3>Oh no! The time is up!</h3><p>But don’t worry.<br>${encouragementsArr[randomEncouragementNum]}</p>`
                 modal.classList.add('modal-timeup');
                 modal.classList.remove('hidden');
@@ -155,19 +156,23 @@
             const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
             score++;
             wins++;
-            scoreWrapper.innerHTML = `${score}`;
+            scoreWrapper.innerHTML = `${score}`
             modal.classList.add('modal-right');
             if (wins == 3 && rounds != roundsMax) {
-                timeMax--;
+                modal.classList.add('modal-levelup');
+                timeMax = timeMax - 2;
                 response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else if (wins == 8 && rounds != roundsMax) {
-                timeMax--;
+                modal.classList.add('modal-levelup');
+                timeMax = timeMax - 2;
                 response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else {
+                btnWhat.innerHTML = `See why`;
                 response = `<p>That was the right answer.</p>`
             }
             modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3>` + response;
         } else {
+            btnWhat.innerHTML = `Wait – what?`;
             const randomPityNum = Math.floor(Math.random() * pityArr.length);
             modal.classList.add('modal-wrong');
             modalText.innerHTML = `<h3>${pityArr[randomPityNum]}</h3><p>The right answer is ${rightAnswer.shape}.</p>`
@@ -201,13 +206,13 @@
             // open gameover modal after close
             modal.className = 'modal modal-gameover';
             const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
-            let textVeryGood = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><p>Give yourself a pat on the back.<br>And don’t forget to screenshot this so you can brag about it at your highschool reunion.<br>(Take that, fifth grade math teacher!)</p>`;
+            let textVeryGood = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><small>Give yourself a pat on the back. You may also want to take a screenshot so you can brag about it at your highschool reunion. (Take that, fifth grade math teacher!)</<small>`;
             let textGood = `<h3>Congratulations!</h3><p>You scored <strong>${wins} out of ${rounds} rounds.</strong><br>Want to play again and try to top this score?</p>`;
             wins >= roundsMax*0.72 ? modalText.innerHTML = textVeryGood : modalText.innerHTML = textGood;
 
             // reset game
             btnStart.innerHTML = 'Start Game';
-            timeMax = 5;
+            timeMax = timeMaxInitial;
             rounds = 0;
             wins = 0;
             score = 0;
@@ -312,12 +317,12 @@ let colorsNightArr = [
     {
         name: "color02",
         alias: "neongreen",
-        hex: "#00ff00",
+        hex: "#08dd08",
     },
     {
         name: "color03",
         alias: "cyan",
-        hex: "#00ffff",
+        hex: "#00dae6",
     },
     {
         name: "color04",
@@ -495,52 +500,52 @@ function shuffleCards(cardsArr) {
       }
 }
 
-createCardDeck(itemDefaultArr,colorsDefaultArr);
+if (prefersDarkScheme.matches) {
+    cardDeck = [];
+    createCardDeck(itemNightArr,colorsNightArr);
+}
+else {
+    cardDeck = [];
+    createCardDeck(itemDefaultArr,colorsDefaultArr);
+}
 
-function changeColor(mode) {
-    if (mode == 'light') {
-        colorMode = 'dark';
-
-        // add custom styles to body
-        const customStyle = `
-            <style id="darkStyle">
-                :root {
-                    --item01-color: ${itemNightArr[0].color.hex};
-                    --item02-color: ${itemNightArr[1].color.hex};
-                    --item03-color: ${itemNightArr[2].color.hex};
-                    --item04-color: ${itemNightArr[3].color.hex};
-                    --item05-color: ${itemNightArr[4].color.hex};
-                    --bg-inner: #276d63;
-                    --bg-outer: #132b34;
-                    --bg-lighter: #276d63;
-                    --color-text: #f0f0f0;
-                    --bg-modal: rgba(39 109 99 / 90%);
-                    --item-fill-color: var(--bg-inner);
-                }
-
-                .modal,
-                .modal .content {
-                    backdrop-filter: blur(2px);
-                }
-            </style>`;
-        document.body.insertAdjacentHTML("afterbegin", customStyle);
-
-        // create card deck
+btnColorMode.addEventListener('click', function () {
+    if (prefersDarkScheme.matches) {
         cardDeck = [];
         createCardDeck(itemNightArr,colorsNightArr);
-
+        document.body.classList.toggle('dark-theme');
+        document.documentElement.setAttribute('data-theme', 'dark');
     } else {
-        colorMode = 'light';
-
-        // remove dark stylesheet
-        let darkStyleSheet = document.getElementById('darkStyle');
-        darkStyleSheet.remove();
-
-        // create card deck
         cardDeck = [];
-        createCardDeck(itemDefaultArr,colorsDefaultArr);
+        createCardDeck(itemNightArr,colorsNightArr);
+        document.body.classList.toggle('light-theme');
+        document.documentElement.setAttribute('data-theme', 'light');
     }
-}
+});
+
+
+// function changeColor() {
+
+
+//     if (mode == 'light') {
+//         colorMode = 'dark';
+
+//         // create card deck
+//         cardDeck = [];
+//         createCardDeck(itemNightArr,colorsNightArr);
+
+//     } else {
+//         colorMode = 'light';
+
+//         // remove dark stylesheet
+//         let darkStyleSheet = document.getElementById('darkStyle');
+//         darkStyleSheet.remove();
+
+//         // create card deck
+//         cardDeck = [];
+//         createCardDeck(itemDefaultArr,colorsDefaultArr);
+//     }
+// }
 
 // console.log(`UNSHUFFLED CARD DECK:`);
 // console.log(cardDeck);

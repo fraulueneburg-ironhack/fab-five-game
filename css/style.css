@@ -1,34 +1,80 @@
 :root {
+    --item01-color: #ff00ff;
+    --item02-color: #08dd08;
+    --item03-color: #00dae6;
+    --item04-color: #ffff00;
+    --item05-color: #6e02c1;
+
+    --bg-inner: #276d63;
+    --bg-outer: #132b34;
+    --bg-lighter: #276d63;
+    --color-text: #f0f0f0;
+
+    --bg-modal: rgba(39 109 99 / 90%);
+    --item-fill-color: var(--bg-inner);
+    --text-shadow-default: 3px 3px rgba(255 255 255 / 10%);
+
     --color-white: #fff;
-    --bg-inner: #e3b95e;
-    --bg-outer: #dba12d;
-    --bg-lighter: #E8C57E;
-
-    --item01-color: #de1f26;
-    --item02-color: #197f36;
-    --item03-color: #4c5aa8;
-    --item04-color: #eee8e7;
-    --item05-color: #747484;
-    --item-fill-color: #fff;
-
-    --color-text: #222;
     --color-btn: #fff;
+    --bg-btn: var(--item03-color);
+    --bg-btn-ok: var(--item02-color);
+
     --border-color-default: var(--color-text);
     --border-width-default: 4px;
     --border-style-default: solid;
     --border-default: var(--border-width-default) var(--border-style-default) var(--border-color-default);
+
     --footer-height: 70px;
     --transition-default: all 0.3s ease;
     --font-family-default: "DM Sans", sans-serif;
-    --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
-    --bg-btn: var(--item03-color);
-    --bg-btn-ok: var(--item02-color);
-    --bg-modal: var(--color-white);
 
     --size-mobile-max: 425px;
     --size-tablet-max: 768px;
     --size-desktop-max: 1024px;
     --size-screen-max: 1440px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --item01-color: #ff00ff;
+        --item02-color: #08dd08;
+        --item03-color: #00dae6;
+        --item04-color: #ffff00;
+        --item05-color: #6e02c1;
+
+        --bg-inner: #276d63;
+        --bg-outer: #132b34;
+        --bg-lighter: #276d63;
+        --color-text: #f0f0f0;
+
+        --bg-modal: rgba(39 109 99 / 90%);
+        --item-fill-color: var(--bg-inner);
+        --text-shadow-default: 3px 3px rgba(255 255 255 / 10%);
+    }
+
+    .modal,
+    .modal .content {
+        backdrop-filter: blur(2px);
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --item01-color: #de1f26;
+        --item02-color: #197f36;
+        --item03-color: #4c5aa8;
+        --item04-color: #eee8e7;
+        --item05-color: #747484;
+
+        --bg-inner: #e3b95e;
+        --bg-outer: #dba12d;
+        --bg-lighter: #E8C57E;
+        --color-text: #222;
+
+        --bg-modal: var(--color-white);
+        --item-fill-color: #fff;
+        --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
+    }
 }
 
 body {
@@ -168,11 +214,11 @@ ul.unstyled li {
     margin: 0;
 }
 
-nav ul li.question {
+nav ul li {
     text-align: center;
 }
 
-nav ul li.question a {
+nav ul li a {
     border-radius: 50%;
     border: var(--border-width-default) solid var(--border-color-default);
     display: block;
@@ -183,7 +229,7 @@ nav ul li.question a {
     width: 40px;
 }
 
-nav ul li.question a:hover {
+nav ul li a:hover {
     text-shadow: var(--text-shadow-default);
     transform: scale(1.2) rotate(10deg);
     transition: var(--transition-default);
@@ -354,6 +400,9 @@ footer a {
     z-index: 5;
 }
 
+
+/*---------- CARDS ANIMATION ----------*/
+
 @keyframes shufflecard1 {
     25%  { top:-1rem; right: 48%; transform: rotate(7deg); z-index: 70; }
     100% { right: 57%; transform: rotate(-30deg); z-index: 10; }
@@ -504,44 +553,32 @@ footer a {
     margin: 1rem 0;
 }
 
+.modal small {
+    display: block;
+    margin: 1rem 0;
+    font-size: 1rem;
+}
+
 .modal .images {
     align-items: center;
     display: flex;
     justify-content: center;
 }
 
-/* right > .btn-ok
-wrong > .btn-ok + .btn-what
-wrongwhat > .btn-ok
-timeup > .btn-ok
-gameover > .btn-restart */
-
-.modal .btn-what,
-.modal .btn-restart,
-.modal-what .btn-what,
-.modal-gameover .btn-ok {
-    display: none;
-}
-
+.modal-right .btn-what,
 .modal-wrong .btn-what,
-.modal-gameover .btn-restart {
+.modal-timeup .btn-what,
+.modal.modal-gameover .btn-restart {
     display: inline-block;
 }
 
-.modal-right .btn-what,
-.modal-timeup .btn-what,
+.modal .btn-restart,
 .modal-what .btn-what,
-.modal-right .btn-restart,
-.modal-timeup .btn-restart,
-.modal-what .btn-restart {
+.modal-levelup .btn-what,
+.modal-gameover .btn-next-round,
+.modal-gameover .btn-what {
     display: none;
 }
-
-.modal-gameover .btn:not(.btn-restart) {
-    display: block;
-}
-
-
 
 .link-close {
     position: absolute;
@@ -600,7 +637,7 @@ gameover > .btn-restart */
         top: 30px;
     }
 
-    nav ul li.question a {
+    nav ul li a {
         font-size: 2.4rem;
         height: 50px;
         width: 50px;
