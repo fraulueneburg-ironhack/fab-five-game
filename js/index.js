@@ -2,18 +2,20 @@ window.onload = function(){
     let timeMax = 5;
     let time = timeMax;
     let rounds = 1;
+    let roundsMax = 4;
     let score = 0;
     let wins = 0;
     let rightAnswer;
+    let gameover = false; 
 
-    let body = document.querySelector('body');
+    let body = document.body;
     let logo = document.querySelector('.logo');
     let btnStart = document.querySelector('.btn-start');
     let btnQuestion = document.querySelector('.btn-question');
     let btnDrawCard = document.querySelector('.btn-draw-card');
     let timeWrapper = document.querySelector('.time .num');
     let scoreWrapper = document.querySelector('.wins .num');
-    let roundsWrapper = document.querySelector('.rounds .num');
+    let roundsWrapper = document.querySelector('.rounds h2');
     let cards = document.querySelectorAll('.cards .card');
     let currentCard = document.querySelector('.card.current');
     let currentCardBack = document.querySelector('.card.current .back .content');
@@ -37,13 +39,13 @@ window.onload = function(){
 
     function startGame() {
         // logo.onclick = () => { showInstructions(); }
-        body.classList.toggle("game-started");
-        btnQuestion.classList.remove("hidden");
-        btnStart.innerHTML = "Resume Game";
+        body.classList.toggle('game-started');
+        btnQuestion.classList.remove('hidden');
+        btnStart.innerHTML = 'Resume Game';
     }
     
     function showInstructions() {
-        body.classList.toggle("game-started");
+        body.classList.toggle('game-started');
     }
 
     function drawCard() {
@@ -62,7 +64,6 @@ window.onload = function(){
         let obj1 = chosenCard.items[randomOneOrZero];
         let obj2 = chosenCard.items[randomOneOrZero2];
         rightAnswer = chosenCard.solution[0];
-        rounds++;
         btnDrawCard.classList.add('hidden');
 
         // fill card
@@ -131,7 +132,7 @@ window.onload = function(){
                 timeWrapper.innerHTML = time;
                 modalText.innerHTML = `<h3>Oh no! The time is up!</h3><p>But don’t worry.<br>${encouragementsArr[randomEncouragementNum]}</p>`
                 modal.classList.add('modal-timeup');
-                modal.classList.remove("hidden");
+                modal.classList.remove('hidden');
                 body.style.overflowY = 'hidden';
                 clearInterval(countBackwards);
                 time = timeMax;
@@ -144,20 +145,22 @@ window.onload = function(){
         let clickedAnswer = clickedElement.getAttribute('ffname');
 
         if (clickedAnswer == rightAnswer.name) {
+            let response;
             const randomComplimentNum = Math.floor(Math.random() * complimentsArr.length);
             score++;
             wins++;
             scoreWrapper.innerHTML = `${score}`;
             modal.classList.add('modal-right');
             if (wins == 3) {
-                timeMax = 4;
-                modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and set the <strong>time limit to 4 seconds.</strong></p>`
+                timeMax--;
+                response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else if (wins == 8) {
-                timeMax = 3;
-                modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p><p>Wow. You’re a natural.<br>Let’s make this just a little more challenging and set the <strong>time limit to 3 seconds.</strong></p>`
+                timeMax--;
+                response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and set the <strong>time limit to ${timeMax} seconds.</strong></p>`
             } else {
-                modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3><p>That was the right answer.</p>`
+                response = `<p>That was the right answer.</p>`
             }
+            modalText.innerHTML = `<h3>${complimentsArr[randomComplimentNum]}!</h3>` + response;
         } else {
             const randomPityNum = Math.floor(Math.random() * pityArr.length);
             modal.classList.add('modal-wrong');
@@ -170,18 +173,43 @@ window.onload = function(){
     // close modal
     function closeModal() {
         body.style.overflowY = '';
-        body.classList.toggle('round-started');
-        modal.classList.add('hidden');
-        modal.classList.remove('modal-right', 'modal-wrong', 'modal-timeup', 'modal-what');
-        currentCard.classList.remove('flipped');
-        rounds < 10 ? roundsWrapper.innerHTML = `0${rounds}` : roundsWrapper.innerHTML = `${rounds}`;
-        btnDrawCard.innerHTML = ('Draw new card');
-        setTimeout(() => { btnDrawCard.classList.remove('hidden'); }, 450);
-        time = timeMax;
-        timeWrapper.innerHTML = time;
+        modal.className = 'modal hidden';
 
+        // remove click event from items
         for (let i=0; i < fabFiveItems.length; i++) {
             fabFiveItems[i].onclick = () => {}
+        }
+
+        // reset card
+        currentCard.classList.remove('flipped');
+        setTimeout(() => {
+            btnDrawCard.classList.remove('hidden');
+        }, 450);
+        
+        if (!gameover) {
+            body.classList.toggle('round-started');
+            btnDrawCard.innerHTML = ('Draw new card');
+            rounds++;
+            time = timeMax;
+        } else {
+            modal.className = 'modal modal-gameover';
+            modalText.innerHTML = `<h3>Amazing!</h3><p>That was one of a kind!<br>You scored <strong>${wins} out of ${rounds} rounds.</strong></p><p>Give yourself a pat on the back.<br>And don’t forget to screenshot this so you can brag about it at your highschool reunion.<br>(Take that, fifth grade math teacher!)</p>`;
+            timeMax = 5;
+            rounds = 0;
+            wins = 0;
+            score = 0;
+            scoreWrapper.innerHTML = `${score}`;
+            btnDrawCard.innerHTML = ('Draw card');
+            gameover = false;
+        }
+        timeWrapper.innerHTML = time;
+        if (rounds == roundsMax) {
+            roundsWrapper.innerHTML = `FINAL ROUND!`;
+            gameover = true;
+        } else if (rounds >= 10) {
+            roundsWrapper.innerHTML = `Round ${rounds}`;
+        } else {
+            roundsWrapper.innerHTML = `Round 0${rounds}`;
         }
     }
 

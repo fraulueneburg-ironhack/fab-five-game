@@ -18,7 +18,7 @@
     --font-family-default: "DM Sans", sans-serif;
     --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
     --bg-btn: var(--item03-color);
-    --bg-btn-next: var(--item02-color);
+    --bg-btn-ok: var(--item02-color);
 
     --size-mobile-max: 425px;
     --size-tablet-max: 768px;
@@ -125,7 +125,7 @@ button, .btn {
     transition: var(--transition-default);
 }
 
-.btn-next  { background-color: var(--bg-btn-next); }
+.btn-ok { background-color: var(--bg-btn-ok); }
 
 button:hover,
 .btn:hover {
@@ -505,11 +505,38 @@ footer a {
     justify-content: center;
 }
 
-.modal-right .btn-what,
-.modal-timeup .btn-what,
-.modal-what .btn-what {
+/* right > .btn-ok
+wrong > .btn-ok + .btn-what
+wrongwhat > .btn-ok
+timeup > .btn-ok
+gameover > .btn-restart */
+
+.modal .btn-what,
+.modal .btn-restart,
+.modal-what .btn-what,
+.modal-gameover .btn-ok {
     display: none;
 }
+
+.modal-wrong .btn-what,
+.modal-gameover .btn-restart {
+    display: inline-block;
+}
+
+.modal-right .btn-what,
+.modal-timeup .btn-what,
+.modal-what .btn-what,
+.modal-right .btn-restart,
+.modal-timeup .btn-restart,
+.modal-what .btn-restart {
+    display: none;
+}
+
+.modal-gameover .btn:not(.btn-restart) {
+    display: block;
+}
+
+
 
 .link-close {
     position: absolute;
