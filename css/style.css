@@ -1,9 +1,5 @@
 :root {
-    --color-red: #de1f26;
-    --color-green: #197f36;
-    --color-blue: #4c5aa8;
     --color-white: #fff;
-    --color-grey: #747484;
     --bg-outer: #dba12d;
 
     --item01-color: #de1f26;
@@ -12,8 +8,8 @@
     --item04-color: #eee8e7;
     --item05-color: #747484;
 
-    --text-color: #222222;
-    --border-color-default: var(--text-color);
+    --color-text: #222222;
+    --border-color-default: var(--color-text);
     --border-width-default: 4px;
     --border-style-default: solid;
     --border-default: var(--border-width-default) var(--border-style-default) var(--border-color-default);
@@ -21,6 +17,8 @@
     --transition-default: all 0.3s ease;
     --font-family-default: "DM Sans", sans-serif;
     --text-shadow-default: 3px 3px rgba(255 255 255 / 60%);
+    --bg-btn: var(--item03-color);
+    --bg-btn-next: var(--item02-color);
 
     --size-mobile-max: 425px;
     --size-tablet-max: 768px;
@@ -30,7 +28,7 @@
 
 body {
     background-color: var(--bg-outer);
-    color: var(--text-color);
+    color: var(--color-text);
     display: flex;
     flex-direction: column;
     font-family: var(--font-family-default);
@@ -98,7 +96,7 @@ p {
 /*---------- LINKS, BUTTONS ----------*/
 
 a {
-    color: var(--text-color);
+    color: var(--color-text);
     text-decoration: none;
 }
 
@@ -108,7 +106,7 @@ a, button, .btn {
 }
 
 button, .btn {
-    background-color: var(--color-blue);
+    background-color: var(--bg-btn);
     border-radius: 8px;
     border: none;
     color: var(--color-white);
@@ -127,11 +125,7 @@ button, .btn {
     transition: var(--transition-default);
 }
 
-.btn-green  { background-color: var(--color-green); }
-.btn-blue   { background-color: var(--color-blue); }
-.btn-red    { background-color: var(--color-red); }
-.btn-white  { background-color: var(--color-white); }
-.btn-grey   { background-color: var(--color-grey); }
+.btn-next  { background-color: var(--bg-btn-next); }
 
 button:hover,
 .btn:hover {
@@ -243,6 +237,14 @@ footer a {
     flex-wrap: wrap;
 }
 
+.fab-five-items a {
+    cursor: default;
+}
+
+.round-started .fab-five-items a {
+    cursor: pointer;
+}
+
 .game-started .fab-five-items {
     margin: 1rem 0 0rem;
 }
@@ -251,8 +253,13 @@ footer a {
     transform: scale(0.8);
     transition: all 0.7s ease;
 }
+
+.fab-five-items li:hover {
+    transition: all 0.2s ease;
+    transform: scale(1.0);
+}
+
 .game-started .fab-five-items li {
-    cursor: pointer;
     transition: all 0.7s ease;
     transform: scale(1.0);
     margin: 0;
