@@ -2,7 +2,7 @@
     --color-red: #de1f26;
     --color-green: #197f36;
     --color-blue: #4c5aa8;
-    --color-white: #eee8e7;
+    --color-white: #fff;
     --color-grey: #747484;
     --bg-outer: #dba12d;
 
@@ -283,6 +283,14 @@ footer a {
     flex-wrap: wrap;
 }
 
+
+.play-head .wins .num,
+.play-head .time .num {
+    display: block;
+    font-size: 2.25rem;
+    font-weight: bold;
+}
+
 .game-started .play-footer {
     display: block;
 }
@@ -324,7 +332,7 @@ footer a {
     display: block;
     height: 280px;
     margin: 2rem auto 0;
-    outline: 12px solid white;
+    outline: 12px solid var(--color-white);
     width: 210px;
 }
 
@@ -464,20 +472,26 @@ footer a {
 }
 
 .modal .content {
-    background-color: #fff;
+    background-color: var(--color-white);
     border-radius: 10px;
     max-width: 360px;
     margin: 0 auto;
-    min-width: 160px;
-    padding: 2.5rem 4rem;
+    padding: 2.5rem 2rem calc(2.5rem - 10px) 2rem;
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 90%;
     transform: translate(-50%, -50%);
 }
 
-.modal .content p:last-child {
-    margin-bottom: 0;
+.modal p {
+    margin-bottom: 1rem;
+}
+
+.modal-right .btn-what,
+.modal-timeup .btn-what,
+.modal-what .btn-what {
+    display: none;
 }
 
 .link-close {
@@ -511,7 +525,7 @@ footer a {
 
 @media (min-width: 500px) {
     .game-started .play-footer {
-        margin-top: 3rem;
+        margin-top: 2rem;
     }
 }
 
@@ -563,11 +577,15 @@ footer a {
     }
 
     .game-started .fab-five-items {
-        margin: 3rem 0 2rem;
+        margin: 1rem 0 0;
     }
 
     .play-head .wins {
         order: -1;
+    }
+
+    .modal .content {
+        min-width: 500px;
     }
 }
 
