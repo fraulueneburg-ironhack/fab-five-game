@@ -625,25 +625,26 @@ function createCardDeck(items, colors) {
 // create card deck depending on color mode
 if (prefersDarkScheme.matches) {
   cardDeck = [];
-  document.documentElement.classList.remove("light-theme");
-  document.documentElement.classList.toggle("dark-theme");
+  document.documentElement.classList.add('dark-theme');
   createCardDeck(itemsDarkArr, colorsDarkArr);
 } else {
   cardDeck = [];
-  document.documentElement.classList.remove("dark-theme");
-  document.documentElement.classList.toggle("light-theme");
+  document.documentElement.classList.add('light-theme');
   createCardDeck(itemsLightArr, colorsLightArr);
 }
+
+// change color mode on button click
 btnColorMode.addEventListener("click", function () {
-  if (prefersDarkScheme.matches) {
+  if (document.documentElement.classList.contains('dark-theme')) {
     cardDeck = [];
     createCardDeck(itemsLightArr, colorsLightArr);
-    document.documentElement.classList.toggle("light-theme");
+    document.documentElement.classList.add('light-theme');
+    document.documentElement.classList.remove('dark-theme');
   } else {
     cardDeck = [];
     createCardDeck(itemsDarkArr, colorsDarkArr);
-    document.documentElement.classList.remove("light-theme");
-    document.documentElement.classList.toggle("dark-theme");
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.remove('light-theme');
   }
 });
 
