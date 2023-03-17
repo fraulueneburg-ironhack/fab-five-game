@@ -9,7 +9,7 @@ Since this is a project early in the class, I am sure there are still some thing
 If you’d like to view my game in your browser:
 
 - `git clone https://github.com/fraulueneburg-ironhack/fab-five-game.git` in your terminal
-- `cd lab-css-recipies-clone`
+- `cd fab-five-game`
 - open `index.html`
 
 ## Rules
