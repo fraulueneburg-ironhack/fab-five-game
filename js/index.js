@@ -50,7 +50,7 @@ for (let i = 0; i < btnCloseModal.length; i++) {
   };
 }
 
-// START GAME
+// ----- START GAME -----
 
 function startGame() {
   body.classList.toggle("game-started");
@@ -174,7 +174,9 @@ function drawCard() {
   }, 1000);
 }
 
-// check solution
+
+// ----- CHECK SOLUTION -----
+
 function checkSolution(clickedElement) {
   let clickedAnswer = clickedElement.getAttribute("ffname");
 
@@ -219,7 +221,9 @@ function checkSolution(clickedElement) {
   body.style.overflowY = "hidden";
 }
 
-// close modal
+
+// ----- CLOSE MODAL -----
+
 function closeModal() {
   body.style.overflowY = "";
   modal.className = "modal hidden";
