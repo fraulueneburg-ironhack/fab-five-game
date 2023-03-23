@@ -2,7 +2,7 @@ let timeMaxInitial = 15;
 let timeMax = timeMaxInitial;
 let time = timeMax;
 let rounds = 1;
-let roundsMax = 20;
+let roundsMax = 25;
 let score = 0;
 let wins = 0;
 let rightAnswer;
