@@ -195,15 +195,15 @@ function checkSolution(clickedElement) {
     modal.classList.add("modal-right");
     if (wins == 3 && rounds != roundsMax) {
       modal.classList.add("modal-levelup");
-      timeMax = timeMax - 2;
+      timeMax = timeMax - 3;
       response = `<p>That was the right answer.</p><p>Wow. You’re good at this.<br>Let’s make this a little more challenging and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`;
     } else if (wins == 8 && rounds != roundsMax) {
       modal.classList.add("modal-levelup");
-      timeMax = timeMax - 2;
+      timeMax = timeMax - 4;
       response = `<p>That was exactly right.</p><p>You’re a natural.<br>Let’s make this just a little more challenging and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`;
     } else if (wins == 15 && rounds != roundsMax) {
       modal.classList.add("modal-levelup");
-      timeMax = timeMax - 1;
+      timeMax = timeMax - 3;
       response = `<p>Really impressive.</p><p>Your brain is unstoppable!<br>To keep things interesting, let’s level up one last time and decrease the <strong>time limit to ${timeMax} seconds.</strong></p>`;
     } else {
       btnWhat.innerHTML = `See why`;
