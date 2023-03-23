@@ -1,4 +1,4 @@
-let timeMaxInitial = 8;
+let timeMaxInitial = 15;
 let timeMax = timeMaxInitial;
 let time = timeMax;
 let rounds = 1;
