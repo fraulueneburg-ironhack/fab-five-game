@@ -77,10 +77,8 @@ function drawCard() {
     modal.classList.add("modal-what");
     let explanation;
     if (
-      (rightAnswer.shape == obj1.shape &&
-        rightAnswer.color.alias == obj1.color.alias) ||
-      (rightAnswer.shape == obj2.shape &&
-        rightAnswer.color.alias == obj2.color.alias)
+      (rightAnswer.shape == obj1.shape && rightAnswer.color == obj1.color) ||
+      (rightAnswer.shape == obj2.shape && rightAnswer.color == obj2.color)
     ) {
       explanation = `
                     <div class="images">
@@ -309,9 +307,9 @@ function createFalseFalseItemCardCombinations(items, falseItems) {
 
       const uniqueCombination =
         chair.shape !== bottle.shape &&
-        chair.color.alias !== bottle.color.alias &&
-        chair.color.alias !== bottle.originalColor.alias &&
-        bottle.color.alias !== chair.originalColor.alias;
+        chair.color !== bottle.color &&
+        chair.color !== bottle.originalColor &&
+        bottle.color !== chair.originalColor;
 
       if (uniqueCombination) {
         let solution = [];
@@ -320,8 +318,8 @@ function createFalseFalseItemCardCombinations(items, falseItems) {
           if (
             items[k].shape !== chair.shape &&
             items[k].shape !== bottle.shape &&
-            items[k].color.alias !== chair.color.alias &&
-            items[k].color.alias !== bottle.color.alias
+            items[k].color !== chair.color &&
+            items[k].color !== bottle.color
           ) {
             solution.push(items[k]);
           }
@@ -346,8 +344,7 @@ function createFalseTrueItemCardCombinations(items, falseItems) {
 
       // - if unique combination (neither same item nor same color) create card + push to deck
       const uniqueCombination =
-        chair.shape !== bottle.shape &&
-        chair.color.alias !== bottle.color.alias;
+        chair.shape !== bottle.shape && chair.color !== bottle.color;
 
       if (uniqueCombination) {
         let newCard = new Card(chair, bottle, solution);
@@ -370,11 +367,11 @@ function removeDuplicates() {
 
       if (
         card1_item1.shape == card2_item2.shape &&
-        card1_item1.color.alias == card2_item2.color.alias &&
+        card1_item1.color == card2_item2.color &&
         card2_item1.shape == card1_item2.shape &&
-        card2_item1.color.alias == card1_item2.color.alias &&
+        card2_item1.color == card1_item2.color &&
         card1_solution.shape == card2_solution.shape &&
-        card1_solution.color.alias == card2_solution.color.alias
+        card1_solution.color == card2_solution.color
       ) {
         cardDeck.splice(m, 1);
       }
